@@ -1,0 +1,1214 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Brothers Burger</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap">
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --surface:#FFFFFF;
+    --surface-2:#FFF3E9;
+    --ink:#241712;
+    --ink-muted:#8A7666;
+    --accent:#DD5E29;
+    --accent-ink:#FFFFFF;
+    --accent-2:#E8A33D;
+    --line:#F5DCC4;
+    --shadow: 0 18px 40px -18px rgba(36,23,18,.35);
+    --header-h: 76px;
+  }
+  /* Brothers Burger commits to one look: white + orange, matching the real brand — no dark mode. */
+
+  *{box-sizing:border-box;}
+  body{background:var(--bg);color:var(--ink);font-family:"Work Sans",system-ui,-apple-system,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  h1,h2,h3,.display{font-family:"Anton",Impact,"Arial Narrow Bold",sans-serif;font-weight:400;letter-spacing:.01em;text-wrap:balance;text-transform:uppercase;}
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  section{padding-block:clamp(56px,9vw,104px);}
+  .wrap{max-width:1180px;margin-inline:auto;padding-inline:20px;}
+  .eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);display:inline-flex;align-items:center;gap:8px;}
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--accent);display:inline-block;}
+  .btn{font-family:"Work Sans",sans-serif;font-weight:700;font-size:15px;border-radius:100px;padding:15px 28px;border:2px solid transparent;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease;text-decoration:none;white-space:nowrap;}
+  .btn:active{transform:scale(.96);}
+  .btn-primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 12px 26px -10px color-mix(in srgb, var(--accent) 70%, transparent);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 30px -10px color-mix(in srgb, var(--accent) 75%, transparent);}
+  .btn-ghost{background:transparent;border-color:color-mix(in srgb, var(--ink) 25%, transparent);color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+  .btn-light{background:var(--surface);color:var(--ink);border-color:var(--line);}
+  .btn-light:hover{border-color:var(--accent);color:var(--accent);}
+  :focus-visible{outline:3px solid var(--accent);outline-offset:2px;}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.is-visible{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+    *{animation-duration:.01ms !important;animation-iteration-count:1 !important;}
+    .rider,.clouds{display:none;}
+  }
+
+  /* ---------- header ---------- */
+  header{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:60;transition:background .25s ease, box-shadow .25s ease, padding .25s ease;padding-block:18px;}
+  header.scrolled{background:color-mix(in srgb, var(--bg) 92%, transparent);backdrop-filter:blur(10px);box-shadow:0 8px 24px -16px rgba(0,0,0,.3);padding-block:10px;border-bottom:1px solid var(--line);}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;}
+  .logo{display:flex;align-items:center;gap:10px;font-family:"Anton",sans-serif;font-size:22px;letter-spacing:.02em;text-transform:uppercase;text-decoration:none;}
+  .logo em{font-style:normal;color:var(--accent);}
+  .logo-badge{width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;}
+
+  /* ---------- brand checker strip ---------- */
+  .checker-strip{height:14px;width:100%;background-color:var(--bg);background-image:conic-gradient(var(--accent) 90deg, transparent 90deg 180deg, var(--accent) 180deg 270deg, transparent 270deg 360deg);background-size:14px 14px;}
+  .nav-links{display:flex;align-items:center;gap:30px;list-style:none;margin:0;padding:0;}
+  .nav-links a{font-weight:600;font-size:14.5px;text-decoration:none;position:relative;padding-block:4px;}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:2px;background:var(--accent);transition:width .2s ease;}
+  .nav-links a:hover::after{width:100%;}
+  .nav-actions{display:flex;align-items:center;gap:12px;}
+  .burger-toggle{display:none;background:none;border:none;color:var(--ink);cursor:pointer;padding:8px;}
+  .mobile-panel{position:fixed;inset:0;background:var(--bg);z-index:70;display:flex;flex-direction:column;padding:24px 20px;transform:translateX(100%);transition:transform .3s ease;padding-top:calc(24px + env(safe-area-inset-top,0px));}
+  .mobile-panel.open{transform:translateX(0);}
+  .mobile-panel .close-x{align-self:flex-end;background:none;border:none;color:var(--ink);font-size:26px;cursor:pointer;}
+  .mobile-panel nav{position:static;padding:0;}
+  .mobile-panel ul{list-style:none;padding:0;margin:36px 0;display:flex;flex-direction:column;gap:26px;}
+  .mobile-panel a{font-family:"Anton",sans-serif;font-size:26px;text-decoration:none;text-transform:uppercase;}
+
+  /* ---------- hero (estilo pôster animado) ---------- */
+  .hero{position:relative;padding-top:calc(var(--header-h) + 28px);padding-bottom:0;overflow:hidden;
+    background:linear-gradient(180deg,#FFD4AE 0%,#FFF3E9 60%,#FFFFFF 100%);}
+
+  .clouds{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+  .cloud{position:absolute;background:rgba(255,255,255,.9);border-radius:100px;filter:blur(2px);animation:drift linear infinite;}
+  .cloud::before,.cloud::after{content:"";position:absolute;background:inherit;border-radius:50%;}
+  .cloud::before{width:55%;height:180%;left:12%;bottom:30%;}
+  .cloud::after{width:40%;height:140%;right:14%;bottom:30%;}
+  @keyframes drift{from{transform:translateX(-30vw);}to{transform:translateX(130vw);}}
+
+  .poster{position:relative;display:grid;grid-template-columns:1fr minmax(260px,420px) 1fr;align-items:center;gap:12px;min-height:min(620px,76vh);}
+  .poster-title,.poster-tag{font-family:"Anton",Impact,sans-serif;text-transform:uppercase;line-height:.88;color:var(--accent);
+    text-shadow:4px 4px 0 var(--ink);margin:0;letter-spacing:.005em;}
+  .poster-title{font-size:clamp(56px,9vw,132px);transform:rotate(-7deg);transform-origin:left center;}
+  .poster-title .sm{display:block;font-size:.34em;color:var(--ink);text-shadow:none;letter-spacing:.04em;margin-bottom:.15em;}
+  .poster-tag{font-size:clamp(34px,4.8vw,76px);text-align:right;transform:rotate(-7deg);transform-origin:right center;}
+  .poster-tag .alt{color:var(--ink);text-shadow:4px 4px 0 var(--accent-2);}
+  .poster .ln{display:block;opacity:0;transform:translateX(-60px) skewX(-12deg);animation:slam .7s cubic-bezier(.2,1.4,.4,1) forwards;}
+  .poster-tag .ln{transform:translateX(60px) skewX(12deg);}
+  @keyframes slam{to{opacity:1;transform:none;}}
+
+  .burger-stage{position:relative;display:flex;justify-content:center;align-items:flex-end;height:100%;}
+  .burger-wrap{position:relative;width:100%;will-change:transform;transition:transform .25s ease-out;}
+  .burger-drop{opacity:0;transform:translateY(-120px) rotate(-8deg) scale(.9);animation:drop 1s .35s cubic-bezier(.2,1.5,.45,1) forwards;}
+  @keyframes drop{to{opacity:1;transform:none;}}
+  .burger-float{animation:float 4.5s 1.4s ease-in-out infinite;}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-16px) rotate(2deg);}}
+  .burger-img{width:100%;filter:drop-shadow(0 30px 30px rgba(36,23,18,.35));}
+  .burger-img.no-cutout{aspect-ratio:1/1;object-fit:cover;border-radius:50%;border:8px solid #fff;filter:none;box-shadow:0 30px 50px -20px rgba(36,23,18,.5), 0 0 0 4px var(--accent);}
+  .burger-shadow{position:absolute;left:50%;bottom:-18px;width:60%;height:26px;transform:translateX(-50%);background:radial-gradient(ellipse, rgba(36,23,18,.3), transparent 70%);animation:shadowPulse 4.5s 1.4s ease-in-out infinite;}
+  @keyframes shadowPulse{50%{transform:translateX(-50%) scale(.8);opacity:.6;}}
+
+  .spin-badge{position:absolute;right:-12%;bottom:4%;width:clamp(112px,11vw,140px);aspect-ratio:1;border-radius:50%;background:var(--accent);color:var(--accent-ink);
+    display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 14px 30px -10px color-mix(in srgb,var(--accent) 70%,transparent);border:3px solid #fff;
+    opacity:0;transform:scale(0);animation:pop .6s 1.3s cubic-bezier(.2,1.6,.4,1) forwards;z-index:3;}
+  .spin-badge svg{position:absolute;inset:0;width:100%;height:100%;animation:spin 12s linear infinite;}
+  .spin-badge text{font-family:"Anton",sans-serif;font-size:11.5px;letter-spacing:1px;fill:currentColor;text-transform:uppercase;}
+  .spin-badge .core{font-size:34px;transition:transform .3s ease;}
+  .spin-badge:hover .core{transform:scale(1.2) rotate(-12deg);}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  @keyframes pop{to{opacity:1;transform:scale(1);}}
+
+  .rider{position:absolute;bottom:24px;left:0;font-size:34px;line-height:1;animation:ride 11s 2s linear infinite;opacity:0;z-index:2;}
+  .rider span{display:inline-block;transform:scaleX(-1);}
+  @keyframes ride{0%{transform:translateX(-80px);opacity:1;}100%{transform:translateX(calc(100vw + 80px));opacity:1;}}
+
+  .hero-bottom{display:grid;grid-template-columns:1.2fr 1fr;gap:36px;align-items:center;padding-block:40px 48px;}
+  .hero p.lede{font-size:17px;color:var(--ink-muted);max-width:52ch;margin:10px 0 0;}
+  .hero-ctas{display:flex;flex-wrap:wrap;gap:14px;margin:20px 0 0;}
+  .hero-stats{display:flex;gap:28px;flex-wrap:wrap;justify-content:flex-end;}
+  .hero-stats div{display:flex;flex-direction:column;}
+  .hero-stats strong{font-family:"Anton",sans-serif;font-size:32px;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .hero-stats span{font-size:12.5px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.06em;}
+
+  /* faixa xadrez andando + letreiro rolando */
+  .checker{height:28px;background:repeating-conic-gradient(var(--accent) 0 25%, #fff 0 50%) 0 0/28px 28px;animation:checkerMove 2.4s linear infinite;}
+  @keyframes checkerMove{to{background-position:56px 0;}}
+  .marquee-clip{overflow:hidden;padding-block:8px;margin-block:-8px;position:relative;z-index:2;}
+  .marquee{background:var(--ink);color:#fff;overflow:hidden;white-space:nowrap;padding-block:12px;transform:rotate(-1.2deg) scale(1.02);margin-block:-4px;position:relative;z-index:2;}
+  .marquee-track{display:inline-flex;gap:38px;animation:marq 22s linear infinite;font-family:"Anton",sans-serif;font-size:24px;text-transform:uppercase;letter-spacing:.03em;}
+  .marquee-track span::after{content:"★";margin-left:38px;color:var(--accent);}
+  @keyframes marq{to{transform:translateX(-50%);}}
+
+  .embers{position:absolute;inset:0;pointer-events:none;z-index:-1;overflow:hidden;}
+  .ember{position:absolute;bottom:-20px;border-radius:50%;background:radial-gradient(circle, var(--accent-2), transparent 70%);opacity:.55;filter:blur(1px);animation:rise 9s linear infinite;}
+  @keyframes rise{0%{transform:translateY(0) translateX(0);opacity:0;}10%{opacity:.6;}100%{transform:translateY(-620px) translateX(30px);opacity:0;}}
+
+  /* ---------- section heads ---------- */
+  .section-head{max-width:640px;margin-bottom:44px;}
+  .section-head h2{font-size:clamp(30px,4.4vw,48px);margin:12px 0 12px;}
+  .section-head p{color:var(--ink-muted);font-size:16.5px;}
+  .section-head.center{margin-inline:auto;text-align:center;}
+
+  /* ---------- historia ---------- */
+  .historia{background:var(--surface-2);}
+  .historia-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center;}
+  .historia-photo{border-radius:24px;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:1/1;}
+  .historia-photo img{width:100%;height:100%;object-fit:cover;}
+  .historia-copy p{color:var(--ink-muted);font-size:16.5px;margin-bottom:16px;}
+  .historia-copy p strong{color:var(--ink);}
+  .valores{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px;}
+  .valor{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;}
+  .valor .ic{font-size:22px;}
+  .valor h3{font-family:"Work Sans",sans-serif;text-transform:none;font-weight:700;font-size:15px;margin:8px 0 4px;letter-spacing:0;}
+  .valor p{font-size:13.5px;color:var(--ink-muted);margin:0;}
+
+  /* ---------- menu ---------- */
+  .tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
+  .tab{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:100px;padding:10px 20px;font-weight:700;font-size:14px;cursor:pointer;transition:all .18s ease;}
+  .tab:hover{border-color:var(--accent);}
+  .tab.active{background:var(--ink);border-color:var(--ink);color:var(--bg);}
+  .menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:26px;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .25s ease, box-shadow .25s ease;}
+  .card:hover{transform:translateY(-6px);}
+  .card-media{position:relative;aspect-ratio:4/3;overflow:hidden;}
+  .card-media img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;}
+  .card:hover .card-media img{transform:scale(1.08);}
+  .card-tag{position:absolute;top:12px;left:12px;background:color-mix(in srgb, var(--bg) 88%, transparent);color:var(--ink);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:5px 10px;border-radius:100px;backdrop-filter:blur(6px);}
+  .card-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:44px;background:
+      repeating-linear-gradient(45deg, color-mix(in srgb, var(--accent) 10%, var(--surface-2)) 0 14px, var(--surface-2) 14px 28px);}
+  .card-body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:8px;flex:1;}
+  .card-body h3{font-family:"Work Sans",sans-serif;text-transform:none;letter-spacing:0;font-weight:700;font-size:17.5px;}
+  .card-body p{color:var(--ink-muted);font-size:13.8px;flex:1;margin:0;}
+  .card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
+  .price-wrap{display:flex;flex-direction:column;}
+  .price{font-family:"Anton",sans-serif;font-size:20px;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1.1;}
+  .add-btn{width:42px;height:42px;border-radius:50%;border:none;background:var(--ink);color:var(--bg);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .18s ease, background .18s ease;flex-shrink:0;}
+  .add-btn:hover{background:var(--accent);color:var(--accent-ink);}
+  .add-btn.added{background:#3E8E5A;color:#fff;}
+  .add-btn:active{transform:scale(.88);}
+
+  /* ---------- galeria ---------- */
+  .galeria{background:var(--surface-2);}
+  .gal-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:150px;gap:14px;}
+  .gal-item{position:relative;border-radius:16px;overflow:hidden;cursor:pointer;}
+  .gal-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease, filter .3s ease;}
+  .gal-item:hover img{transform:scale(1.1);}
+  .gal-item::after{content:"";position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,.55), transparent 55%);opacity:0;transition:opacity .3s ease;}
+  .gal-item:hover::after{opacity:1;}
+  .gal-item span{position:absolute;left:12px;bottom:10px;color:#fff;font-weight:700;font-size:13px;opacity:0;transform:translateY(8px);transition:all .3s ease;}
+  .gal-item:hover span{opacity:1;transform:translateY(0);}
+  .gal-item.tall{grid-row:span 2;}
+  .gal-item.wide{grid-column:span 2;}
+
+  /* ---------- localizacao ---------- */
+  .local{background:var(--accent);color:var(--accent-ink);}
+  .local .eyebrow{color:var(--accent-ink);}
+  .local .eyebrow::before{background:var(--accent-ink);}
+  .local-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:stretch;}
+  .local h2{color:inherit;}
+  .info-list{list-style:none;margin:26px 0 30px;padding:0;display:flex;flex-direction:column;gap:18px;}
+  .info-list li{display:flex;gap:14px;align-items:flex-start;}
+  .info-list .ic{font-size:20px;line-height:1.3;}
+  .info-list strong{display:block;font-size:15px;margin-bottom:2px;}
+  .info-list span{font-size:14.5px;opacity:.75;}
+  .map-wrap{position:relative;display:block;border-radius:22px;overflow:hidden;box-shadow:0 24px 50px -20px rgba(36,23,18,.55);min-height:360px;border:4px solid #fff;background:#FFF3E9;text-decoration:none;color:var(--ink);}
+  .street-map{position:absolute;inset:0;width:100%;height:100%;display:block;transition:transform .6s ease;}
+  .map-wrap:hover .street-map{transform:scale(1.04);}
+  .street-map .bg{fill:#FFF3E9;}
+  .street-map .st-minor{stroke:#fff;stroke-width:7;}
+  .street-map .st-major{stroke:#F5C9A3;stroke-width:12;}
+  .street-map .st-target{stroke:var(--accent);stroke-width:12;}
+  .street-map .lbl{font-family:"Work Sans",sans-serif;font-size:13px;font-weight:600;fill:#8A7666;text-anchor:middle;paint-order:stroke;stroke:#FFF3E9;stroke-width:4px;}
+  .street-map .lbl-t{font-family:"Anton",sans-serif;font-size:17px;font-weight:400;fill:var(--ink);letter-spacing:.03em;text-transform:uppercase;}
+  .map-pin{position:absolute;left:50%;top:50%;width:58px;height:58px;margin:-72px 0 0 -29px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--accent);box-shadow:0 10px 18px -6px rgba(36,23,18,.55);display:flex;align-items:center;justify-content:center;animation:pinBounce 2.2s ease-in-out infinite;}
+  .map-pin img{width:44px;height:44px;border-radius:50%;transform:rotate(45deg);border:2px solid #fff;object-fit:cover;}
+  .map-pin::after{content:"";position:absolute;left:-10px;bottom:-10px;width:16px;height:16px;border-radius:50%;background:rgba(36,23,18,.25);}
+  @keyframes pinBounce{0%,100%{translate:0 0;}50%{translate:0 -8px;}}
+  .map-card{position:absolute;left:14px;right:14px;bottom:14px;background:#fff;border-radius:16px;padding:14px 16px;display:flex;flex-wrap:wrap;align-items:center;column-gap:14px;row-gap:2px;box-shadow:0 12px 26px -12px rgba(36,23,18,.4);}
+  .map-card strong{font-family:"Anton",sans-serif;font-weight:400;font-size:19px;text-transform:uppercase;letter-spacing:.02em;flex-basis:100%;}
+  .map-card > span:not(.map-cta){font-size:13.5px;color:var(--ink-muted);flex:1;}
+  .map-cta{font-weight:700;font-size:13.5px;color:var(--accent);white-space:nowrap;}
+  .local .btn-primary{background:var(--accent);color:#fff;border-color:#fff;box-shadow:0 12px 26px -12px rgba(36,23,18,.45);}
+  .local .btn-primary:hover{background:#fff;color:var(--accent);}
+  .map-credit{position:absolute;top:10px;right:12px;font-size:10.5px;color:#8A7666;background:rgba(255,255,255,.8);padding:2px 7px;border-radius:6px;}
+
+  /* ---------- footer ---------- */
+  footer{padding:44px 0;border-top:1px solid var(--line);}
+  .foot-grid{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;}
+  .foot-social{display:flex;gap:14px;}
+  .foot-social a{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .2s ease;}
+  .foot-social a:hover{border-color:var(--accent);color:var(--accent);}
+  .foot-note{font-size:13px;color:var(--ink-muted);}
+
+  /* ---------- cart ---------- */
+  .cart-fab{position:fixed;right:22px;bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:55;background:var(--accent);color:var(--accent-ink);border:none;border-radius:100px;padding:16px 22px;display:flex;align-items:center;gap:10px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 14px 30px -10px color-mix(in srgb, var(--accent) 70%, transparent);transition:transform .2s ease;}
+  .cart-fab:hover{transform:translateY(-3px);}
+  .cart-fab.bump{animation:bump .35s ease;}
+  @keyframes bump{0%{transform:scale(1);}35%{transform:scale(1.14);}100%{transform:scale(1);}}
+  .cart-fab .badge{background:var(--accent-ink);color:var(--accent);border-radius:50%;width:22px;height:22px;font-size:12px;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums;}
+
+  .admin-fab{position:fixed;left:22px;bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:55;background:var(--ink);color:var(--bg);border:none;border-radius:100px;padding:14px 20px;font-weight:700;font-size:14px;cursor:pointer;box-shadow:var(--shadow);}
+  .admin-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);}
+  .admin-row .an{flex:1;font-size:14px;}
+  .admin-row .an small{display:block;color:var(--ink-muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;}
+  .admin-row input{width:96px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:9px 10px;font-family:inherit;font-size:14px;font-variant-numeric:tabular-nums;text-align:right;}
+  .admin-cat-head{font-family:"Anton",sans-serif;font-size:15px;margin:20px 0 4px;color:var(--accent);}
+  .admin-cat-head:first-child{margin-top:0;}
+
+  .overlay{position:fixed;inset:0;background:rgba(15,10,6,.5);z-index:80;opacity:0;pointer-events:none;transition:opacity .25s ease;}
+  .overlay.open{opacity:1;pointer-events:auto;}
+  .drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100vw);background:var(--bg);z-index:90;transform:translateX(100%);transition:transform .3s ease;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+  .drawer.open{transform:translateX(0);}
+  .drawer-head{display:flex;align-items:center;justify-content:space-between;padding:20px;border-bottom:1px solid var(--line);}
+  .drawer-head h3{font-size:22px;margin:0;}
+  .drawer-head button{background:none;border:none;font-size:24px;color:var(--ink);cursor:pointer;}
+  .drawer-body{flex:1;overflow-y:auto;padding:16px 20px;}
+  .cart-empty{text-align:center;color:var(--ink-muted);padding:60px 20px;}
+  .cart-empty .em{font-size:44px;display:block;margin-bottom:14px;}
+  .cart-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);}
+  .cart-item img{width:64px;height:64px;border-radius:12px;object-fit:cover;flex-shrink:0;}
+  .cart-thumb-ph{width:64px;height:64px;border-radius:12px;background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;}
+  .cart-item .ci-info{flex:1;display:flex;flex-direction:column;gap:4px;}
+  .cart-item .ci-info h4{font-size:14.5px;margin:0;font-weight:700;}
+  .cart-item .ci-price{font-size:13px;color:var(--ink-muted);font-variant-numeric:tabular-nums;}
+  .qty-ctrl{display:flex;align-items:center;gap:10px;}
+  .qty-ctrl button{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font-size:14px;line-height:1;}
+  .qty-ctrl span{font-size:14px;min-width:16px;text-align:center;font-variant-numeric:tabular-nums;}
+  .ci-remove{background:none;border:none;color:var(--ink-muted);text-decoration:underline;font-size:12px;cursor:pointer;padding:0;align-self:flex-start;}
+  .drawer-form{display:flex;flex-direction:column;gap:12px;margin-top:18px;}
+  .seg{display:flex;border:1px solid var(--line);border-radius:100px;padding:4px;gap:4px;}
+  .seg button{flex:1;border:none;background:none;padding:9px 10px;border-radius:100px;font-weight:700;font-size:13.5px;cursor:pointer;color:var(--ink-muted);}
+  .seg button.active{background:var(--ink);color:var(--bg);}
+  .field label{display:block;font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-muted);margin-bottom:6px;}
+  .field input, .field textarea{width:100%;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:11px 13px;font-family:inherit;font-size:14.5px;}
+  .field textarea{resize:vertical;min-height:60px;}
+  .drawer-foot{border-top:1px solid var(--line);padding:16px 20px;background:var(--surface);}
+  .totals-row{display:flex;justify-content:space-between;font-size:14.5px;color:var(--ink-muted);margin-bottom:6px;}
+  .totals-row.total{color:var(--ink);font-weight:800;font-size:18px;margin-bottom:14px;font-variant-numeric:tabular-nums;}
+  .drawer-foot .btn{width:100%;}
+
+  .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:100px;font-size:14px;font-weight:600;z-index:95;opacity:0;pointer-events:none;transition:all .25s ease;box-shadow:var(--shadow);}
+  .toast.show{opacity:1;transform:translate(-50%,0);}
+
+  /* ---------- options modal ---------- */
+  .options-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.96);width:min(440px,92vw);max-height:82vh;overflow-y:auto;background:var(--bg);border-radius:20px;z-index:92;opacity:0;pointer-events:none;transition:opacity .22s ease, transform .22s ease;box-shadow:var(--shadow);}
+  .options-modal.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1);}
+  .options-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:20px 20px 14px;border-bottom:1px solid var(--line);}
+  .options-head h3{font-size:19px;margin:0 0 4px;text-transform:none;font-family:"Work Sans",sans-serif;font-weight:700;}
+  .options-head p{font-size:13px;color:var(--ink-muted);margin:0;}
+  .options-head button{background:none;border:none;font-size:22px;color:var(--ink);cursor:pointer;flex-shrink:0;}
+  .options-body{padding:18px 20px;display:flex;flex-direction:column;gap:16px;}
+  .opt-group .grp-label{display:block;font-weight:700;font-size:13.5px;margin-bottom:8px;}
+  .opt-group select{width:100%;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:10px 12px;font-family:inherit;font-size:14px;margin-bottom:8px;}
+  .opt-group select:last-child{margin-bottom:0;}
+  .chk-row{display:flex;align-items:center;gap:10px;padding:9px 0;font-size:14.5px;cursor:pointer;}
+  .chk-row input{width:18px;height:18px;accent-color:var(--accent);flex-shrink:0;cursor:pointer;}
+  .options-foot{padding:14px 20px 20px;}
+  .options-foot .btn{width:100%;}
+
+  @media (max-width: 920px){
+    .nav-links, .nav-actions .btn-ghost{display:none;}
+    .burger-toggle{display:block;}
+    .poster{grid-template-columns:1fr;min-height:0;gap:0;text-align:center;padding-top:10px;}
+    .poster-title,.poster-tag{transform:rotate(-5deg);transform-origin:center;text-align:center;}
+    .poster-title{font-size:clamp(60px,18vw,110px);}
+    .poster-tag{font-size:clamp(32px,9.5vw,60px);margin-top:4px;}
+    .burger-stage{max-width:300px;margin:26px auto 26px;}
+    .spin-badge{right:-14px;bottom:-6px;width:100px;}
+    .hero-bottom{grid-template-columns:1fr;text-align:center;}
+    .hero p.lede{margin-inline:auto;}
+    .hero-ctas{justify-content:center;}
+    .hero-stats{justify-content:center;}
+    .marquee-track{font-size:19px;}
+    .historia-grid{grid-template-columns:1fr;}
+    .valores{grid-template-columns:1fr 1fr;}
+    .depo-grid{grid-template-columns:1fr;}
+    .local-grid{grid-template-columns:1fr;}
+    .gal-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:130px;}
+    .gal-item.wide{grid-column:span 2;}
+    .gal-item.tall{grid-row:span 1;}
+  }
+  @media (max-width:520px){
+    .hero-ctas{flex-direction:column;align-items:stretch;}
+    .rider{font-size:28px;}
+    .nav-actions .btn-primary{display:none;}
+    .valores{grid-template-columns:1fr;}
+  }
+</style>
+
+<div class="embers" id="embers"></div>
+
+<header id="siteHeader">
+  <div class="wrap nav">
+    <a href="#top" class="logo"><img src="images/logo.jpeg" alt="" class="logo-badge">Brothers<em>Burger</em></a>
+    <ul class="nav-links">
+      <li><a href="#historia">História</a></li>
+      <li><a href="#cardapio">Cardápio</a></li>
+      <li><a href="#galeria">Galeria</a></li>
+      <li><a href="#local">Localização</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="#cardapio" class="btn btn-ghost">Ver cardápio</a>
+      <button class="btn btn-primary" onclick="openCart()">🛒 Meu pedido</button>
+      <button class="burger-toggle" onclick="toggleMobile(true)" aria-label="Abrir menu">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-panel" id="mobilePanel">
+  <button class="close-x" onclick="toggleMobile(false)" aria-label="Fechar menu">✕</button>
+  <nav>
+    <ul>
+      <li><a href="#historia" onclick="toggleMobile(false)">História</a></li>
+      <li><a href="#cardapio" onclick="toggleMobile(false)">Cardápio</a></li>
+      <li><a href="#galeria" onclick="toggleMobile(false)">Galeria</a></li>
+      <li><a href="#local" onclick="toggleMobile(false)">Localização</a></li>
+    </ul>
+  </nav>
+  <button class="btn btn-primary" onclick="toggleMobile(false); openCart();" style="margin-top:auto;">🛒 Ver meu pedido</button>
+</div>
+
+<main id="top">
+  <section class="hero">
+    <div class="clouds" id="clouds" aria-hidden="true"></div>
+    <div class="rider" aria-hidden="true"><span>🛵</span></div>
+
+    <div class="wrap poster">
+      <h1 class="poster-title">
+        <span class="ln sm" style="animation-delay:.05s">Brothers Burger</span>
+        <span class="ln" style="animation-delay:.15s">The</span>
+        <span class="ln" style="animation-delay:.25s">Best</span>
+        <span class="ln" style="animation-delay:.35s">One.</span>
+      </h1>
+
+      <div class="burger-stage">
+        <div class="burger-wrap" id="burgerParallax">
+          <div class="burger-drop">
+            <div class="burger-float">
+              <!-- Com uma foto do burger SEM FUNDO (PNG), troque o src e tire a classe "no-cutout" pra ficar igual ao vídeo -->
+              <img class="burger-img no-cutout" src="images/duplo-bacon.jpg" alt="Duplo Bacon da Brothers Burger com American cheese e bacon crocante">
+            </div>
+          </div>
+          <div class="burger-shadow"></div>
+        </div>
+        <a href="#cardapio" class="spin-badge" aria-label="Pedir meu burger">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <defs><path id="circlePath" d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0"/></defs>
+            <text textLength="228" lengthAdjust="spacing"><textPath href="#circlePath" textLength="228" lengthAdjust="spacing">Pedir meu burger • Pedir meu burger •</textPath></text>
+          </svg>
+          <span class="core">🍔</span>
+        </a>
+      </div>
+
+      <p class="poster-tag" aria-label="Do artesanal ao tradicional">
+        <span class="ln" style="animation-delay:.5s">Do</span>
+        <span class="ln alt" style="animation-delay:.6s">artesanal</span>
+        <span class="ln" style="animation-delay:.7s">ao</span>
+        <span class="ln" style="animation-delay:.8s">tradicional.</span>
+      </p>
+    </div>
+
+    <div class="wrap hero-bottom">
+      <div class="reveal is-visible">
+        <span class="eyebrow">Campo Grande · RJ</span>
+        <p class="lede">Pão brioche macio, blend suculento e aquele recheio generoso que só a receita da casa tem. Brothers Burger: do artesanal ao tradicional.</p>
+        <div class="hero-ctas">
+          <a href="#cardapio" class="btn btn-primary">Ver cardápio 🍔</a>
+          <a href="https://wa.me/5521965325983" target="_blank" rel="noopener" class="btn btn-ghost">Chamar no WhatsApp</a>
+        </div>
+      </div>
+      <div class="hero-stats reveal is-visible">
+        <div><strong>3,9K</strong><span>seguidores no Insta</span></div>
+        <div><strong>100%</strong><span>blend artesanal</span></div>
+        <div><strong>18-23h</strong><span>todos os dias</span></div>
+      </div>
+    </div>
+
+    <div class="checker" aria-hidden="true"></div>
+  </section>
+
+  <div class="marquee-clip"><div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>The best one</span><span>Blend artesanal</span><span>Pão brioche</span><span>Smoke-X defumado</span><span>Delivery em Campo Grande</span><span>Peça pelo WhatsApp</span>
+      <span>The best one</span><span>Blend artesanal</span><span>Pão brioche</span><span>Smoke-X defumado</span><span>Delivery em Campo Grande</span><span>Peça pelo WhatsApp</span>
+    </div>
+  </div></div>
+
+  <section class="historia" id="historia">
+    <div class="wrap historia-grid">
+      <div class="historia-photo reveal">
+        <img src="images/dois-artesanais.jpeg" alt="Dois hambúrgueres artesanais Brothers Burger lado a lado">
+      </div>
+      <div class="historia-copy reveal">
+        <span class="eyebrow">Nossa história</span>
+        <h2>Dois irmãos, um pão brioche e uma missão: ser o melhor</h2>
+        <p>A <strong>Brothers Burger</strong> nasceu em Campo Grande com uma proposta simples: do artesanal ao tradicional, cada hambúrguer sai com blend suculento, pão brioche macio e recheio generoso. Sem atalho, sem pressa.</p>
+        <p>O apelido pegou rápido: <strong>"the best one"</strong>. É o que a casa promete em cada Smoke-X defumado em madeiras frutíferas, cada combo montado na hora e cada pedido que sai quentinho — seja na loja ou direto no seu WhatsApp.</p>
+        <div class="valores">
+          <div class="valor"><span class="ic">🥩</span><h3>Blend artesanal</h3><p>Carne suculenta, sempre fresquinha.</p></div>
+          <div class="valor"><span class="ic">💨</span><h3>Toque defumado</h3><p>Madeiras frutíferas em receitas como o Smoke-X.</p></div>
+          <div class="valor"><span class="ic">🏠</span><h3>Feito em Campo Grande</h3><p>Loja física e delivery bem pertinho de você.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cardapio">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Cardápio</span>
+        <h2>Escolha o seu e manda pro carrinho</h2>
+        <p>Monta seu pedido aqui do site e finalize direto no nosso WhatsApp — rapidinho.</p>
+      </div>
+      <div class="tabs reveal">
+        <button class="tab active" data-cat="todos">Todos</button>
+        <button class="tab" data-cat="artesanais">Artesanais</button>
+        <button class="tab" data-cat="smash">Smash</button>
+        <button class="tab" data-cat="tradicional">Tradicional</button>
+        <button class="tab" data-cat="combos">Combos</button>
+        <button class="tab" data-cat="compartilhar">Pra Compartilhar</button>
+        <button class="tab" data-cat="porcoes">Porções</button>
+        <button class="tab" data-cat="bebidas">Bebidas</button>
+        <button class="tab" data-cat="doces">Doces</button>
+      </div>
+      <div class="menu-grid" id="menuGrid"></div>
+    </div>
+  </section>
+
+  <section class="galeria" id="galeria">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Galeria</span>
+        <h2>Da chapa direto pra sua tela</h2>
+        <p>Um gostinho do que te espera por aqui.</p>
+      </div>
+      <div class="gal-grid reveal">
+        <div class="gal-item tall"><img src="images/hamburguer-refri.jpg" alt="Hambúrguer duplo com bacon, fritas e refrigerante"><span>Duplo Bacon</span></div>
+        <div class="gal-item wide"><img src="images/combo-familia.jpg" alt="Mãos pegando lanches e porções de uma caixa Brothers Burger"><span>Pra compartilhar</span></div>
+        <div class="gal-item"><img src="images/smoke-x.jpg" alt="Smoke-X defumado com bacon e barbecue"><span>Smoke-X</span></div>
+        <div class="gal-item"><img src="images/brother-insano.jpg" alt="Brother Insano com catupiry empanado"><span>Brother Insano</span></div>
+        <div class="gal-item"><img src="images/waffle.png" alt="Waffle com Nutella e morango"><span>Waffle</span></div>
+        <div class="gal-item wide"><img src="images/monte-seu-box.jpg" alt="Box artesanal com hambúrgueres e porções"><span>Box Artesanal</span></div>
+        <div class="gal-item"><img src="images/el-parrillero.png" alt="El Parrillero com chimichurri da casa"><span>El Parrillero</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="social">
+    <div class="wrap section-head center reveal" style="margin-bottom:0;">
+      <span class="eyebrow" style="justify-content:center;">Nas redes</span>
+      <h2>Segue a gente no Instagram</h2>
+      <p><strong>@brothersburger.rj</strong> · mais de 3,9 mil seguidores acompanhando cada lançamento e promoção em primeira mão.</p>
+      <div style="margin-top:22px;">
+        <a href="https://www.instagram.com/brothersburger.rj/" target="_blank" rel="noopener" class="btn btn-primary">Seguir no Instagram 📸</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="local" id="local">
+    <div class="wrap local-grid">
+      <div class="reveal">
+        <span class="eyebrow">Onde estamos</span>
+        <h2>Vem comer com a gente</h2>
+        <ul class="info-list">
+          <li><span class="ic">📍</span><div><strong>Endereço</strong><span>R. União da Vitória, 574 — Campo Grande, Rio de Janeiro — RJ</span></div></li>
+          <li><span class="ic">🕒</span><div><strong>Horário</strong><span>Seg e ter: delivery, 18h às 23h · Qua a dom: loja e delivery, 18h às 23h</span></div></li>
+          <li><span class="ic">📞</span><div><strong>WhatsApp / Telefone</strong><span>(21) 96532-5983</span></div></li>
+          <li><span class="ic">📸</span><div><strong>Instagram</strong><span>@brothersburger.rj</span></div></li>
+        </ul>
+        <a href="https://wa.me/5521965325983" target="_blank" rel="noopener" class="btn btn-primary">Falar no WhatsApp</a>
+      </div>
+      <a class="map-wrap reveal" href="https://www.google.com/maps/search/?api=1&query=Rua+Uni%C3%A3o+da+Vit%C3%B3ria+574+Campo+Grande+Rio+de+Janeiro" target="_blank" rel="noopener" aria-label="Abrir R. União da Vitória, 574 no Google Maps">
+        <svg class="street-map" viewBox="0 0 900 560" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Mapa das ruas em volta da Brothers Burger, na Rua União da Vitória, Campo Grande"><rect width="900" height="560" class="bg"/><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path class="st-minor" d="M727.7,581.7 L722.4,577.7 L692.9,555.5 L648.3,532.2 L621.2,519.3 L604.6,511.2 L593.0,505.4 L586.2,501.9 L581.2,499.5"/><path class="st-minor" d="M986.2,55.3 L946.0,79.3 L849.4,142.5 L803.2,171.0 L759.3,200.4 L696.3,255.7 L663.5,283.0 L628.1,314.4 L610.9,328.4 L578.3,357.3 L564.9,371.9 L550.2,390.7 L506.4,440.9 L476.3,476.5 L425.9,536.4"/><path class="st-minor" d="M1148.4,675.5 L1105.3,640.7 L1046.6,594.6 L1000.3,557.8 L966.4,535.6 L921.5,505.8 L853.7,453.4"/><path class="st-minor" d="M704.9,379.9 L665.5,344.2 L628.1,314.4 L578.8,275.6 L543.9,243.8 L535.8,236.8 L508.4,212.8 L461.3,175.7"/><path class="st-minor" d="M655.3,112.0 L543.9,243.8 L431.7,379.1 L398.8,416.2 L360.4,460.8 L310.9,517.5"/><path class="st-minor" d="M853.7,453.4 L894.2,410.8 L931.5,369.3 L966.5,332.3 L987.3,310.5 L1000.3,296.5 L1040.7,255.6 L1080.3,212.0"/><path class="st-minor" d="M-94.1,713.3 L-79.5,683.3 L-64.0,651.2 L-39.8,600.2 L-26.9,573.0 L-26.6,572.3 L-18.3,557.6 L-2.2,527.5 L25.2,476.4 L36.4,460.0 L46.6,444.6 L62.3,419.9 L85.6,387.2"/><path class="st-minor" d="M735.9,-153.9 L775.1,-121.8 L815.7,-88.8 L840.9,-67.2 L874.9,-38.6 L904.8,-12.3 L931.8,7.7 L948.6,21.6 L955.5,27.1 L979.3,49.0 L986.2,55.3 L995.7,62.4 L1006.0,68.2 L1106.5,79.7"/><path class="st-minor" d="M479.4,655.5 L517.1,660.0"/><path class="st-minor" d="M775.1,-121.8 L741.2,-58.1 L701.8,17.6"/><path class="st-minor" d="M1000.3,296.5 L914.1,213.7"/><path class="st-minor" d="M966.5,332.3 L919.1,286.6 L869.9,241.7"/><path class="st-minor" d="M514.1,569.0 L465.8,646.9"/><path class="st-minor" d="M976.9,112.9 L840.8,203.1"/><path class="st-minor" d="M948.6,21.6 L812.1,108.4"/><path class="st-minor" d="M772.1,75.6 L857.5,19.0 L904.8,-12.3"/><path class="st-minor" d="M869.9,241.7 L840.6,208.3 L840.1,205.5 L840.8,203.1"/><path class="st-minor" d="M852.0,371.3 L778.9,447.3"/><path class="st-minor" d="M803.2,171.0 L748.9,122.5 L715.9,96.0 L710.3,91.5 L688.8,73.0 L658.9,47.6 L593.9,-7.5"/><path class="st-minor" d="M804.2,636.9 L789.7,654.1 L726.1,723.9 L723.9,726.5 L723.2,728.6 L723.2,730.4 L724.0,732.3 L727.7,737.4 L733.0,743.9"/><path class="st-minor" d="M855.3,296.1 L838.9,309.4 L812.4,332.7 L731.5,400.8 L691.4,433.6"/><path class="st-minor" d="M673.7,500.5 L648.3,532.2 L622.7,575.5 L616.1,587.3 L582.7,645.5 L569.1,669.2"/><path class="st-minor" d="M921.5,505.8 L899.2,529.6 L874.6,554.9"/><path class="st-minor" d="M977.9,586.2 L951.8,567.8 L936.1,557.6 L899.2,529.6"/><path class="st-minor" d="M798.9,234.8 L665.5,344.2 L599.9,399.2 L530.9,461.9"/><path class="st-minor" d="M942.5,458.3 L894.2,410.8 L875.8,393.0 L852.0,371.3 L812.4,332.7"/><path class="st-minor" d="M362.3,573.4 L362.9,567.8 L432.0,553.9 L474.4,541.2 L556.6,516.5 L564.7,513.3 L586.2,501.9"/><path class="st-minor" d="M815.7,-88.8 L787.5,-40.9 L766.5,2.9 L741.2,49.8 L715.9,96.0 L709.6,108.7 L692.0,143.9"/><path class="st-minor" d="M604.6,511.2 L594.5,528.7 L579.6,555.6 L568.8,573.4 L548.5,602.9 L526.5,642.8 L517.1,660.0"/><path class="st-minor" d="M867.4,157.8 L849.4,142.5 L812.1,108.4 L772.1,75.6 L741.2,49.8 L701.8,17.6 L662.9,-14.9 L618.5,-53.0"/><path class="st-minor" d="M432.0,553.9 L514.1,569.0 L568.8,573.4 L622.7,575.5 L648.5,576.8 L655.4,577.1 L707.4,580.8 L714.5,580.9 L718.4,580.1 L722.4,577.7"/><path class="st-minor" d="M1029.0,804.3 L988.3,774.2 L982.0,769.5 L939.4,738.1 L903.0,712.3 L889.9,700.4 L877.0,690.7 L863.6,680.4 L834.5,657.9 L815.6,644.7 L804.2,636.9 L727.7,581.7"/><path class="st-minor" d="M422.5,-11.7 L486.8,-2.6"/><path class="st-minor" d="M421.8,84.0 L343.3,84.0"/><path class="st-minor" d="M131.4,-250.6 L147.5,-167.8 L152.0,-130.7 L151.5,-122.0 L149.5,-117.7 L145.2,-112.2 L137.0,-105.9 L105.1,-82.8 L61.7,-50.4 L26.7,-25.2 L-10.3,4.9 L-17.7,12.8 L-44.9,40.7 L-68.6,65.9 L-182.5,180.2"/><path class="st-minor" d="M591.6,-206.9 L595.1,-235.5"/><path class="st-minor" d="M624.4,-202.7 L627.8,-229.1"/><path class="st-minor" d="M421.1,137.9 L342.2,137.8"/><path class="st-minor" d="M619.1,-172.1 L609.8,-97.6"/><path class="st-minor" d="M421.9,-22.7 L378.9,-22.5 L341.4,-23.7 L340.1,-24.4 L339.1,-25.2 L338.5,-26.6"/><path class="st-minor" d="M-1.6,120.1 L-99.6,261.5"/><path class="st-minor" d="M421.5,192.4 L375.1,192.7 L345.2,192.4 L341.8,193.3 L338.6,194.3 L323.6,201.8"/><path class="st-minor" d="M207.7,37.7 L122.5,-18.2 L96.2,-36.0"/><path class="st-minor" d="M229.2,5.6 L126.9,-60.0"/><path class="st-minor" d="M376.5,-96.4 L369.1,-115.9 L366.0,-128.8 L360.5,-170.0 L360.8,-172.4 L361.9,-174.3 L378.6,-191.3 L379.8,-194.4 L380.1,-198.1 L376.6,-212.0 L374.9,-214.8 L367.9,-225.0 L366.2,-226.2 L364.1,-226.5 L335.1,-224.2"/><path class="st-minor" d="M337.2,-74.4 L337.9,-30.3 L338.5,-26.6"/><path class="st-minor" d="M421.0,31.9 L352.2,31.8"/><path class="st-minor" d="M518.6,-52.8 L422.1,-66.1"/><path class="st-minor" d="M639.4,-90.5 L609.8,-97.6 L575.1,-103.5 L557.0,-105.9 L521.2,-110.7 L449.2,-120.4 L445.8,-120.6 L436.8,-120.8 L423.5,-120.8 L392.2,-104.3 L376.5,-96.4 L342.5,-76.7 L337.2,-74.4 L266.0,-34.9 L253.4,-27.9"/><path class="st-minor" d="M530.0,-159.2 L462.5,-154.7 L450.6,-153.3 L437.0,-151.2 L417.9,-148.6"/><path class="st-minor" d="M251.3,290.9 L104.8,191.1 L81.5,174.3 L36.3,145.0 L-1.6,120.1 L-10.7,112.5 L-34.7,92.8 L-68.6,65.9"/><path class="st-minor" d="M548.2,-212.9 L559.2,-211.4 L591.6,-206.9 L624.4,-202.7 L631.7,-201.8 L656.4,-198.7 L666.2,-197.2 L678.8,-194.7"/><path class="st-minor" d="M-26.6,572.3 L-45.3,394.0 L-45.6,388.3 L-45.1,383.4 L-43.6,380.1 L-37.7,373.5 L-29.6,366.6 L8.8,334.3"/><path class="st-minor" d="M-170.9,288.9 L-106.5,330.9 L-50.6,365.3 L-37.7,373.5"/><path class="st-minor" d="M544.7,781.9 L549.6,855.2"/><path class="st-minor" d="M371.1,851.6 L361.3,846.6 L360.5,845.9 L360.1,845.0 L360.2,844.0 L361.0,841.7 L384.6,788.2 L385.4,786.7 L386.4,785.6 L387.8,785.1 L389.1,785.1 L399.5,790.2"/><path class="st-minor" d="M434.2,714.7 L548.6,773.8"/><path class="st-minor" d="M319.3,962.9 L371.1,851.6 L376.7,854.1 L377.8,854.4 L378.5,854.4 L379.2,854.2 L380.0,853.3 L380.9,851.8 L404.3,797.0 L404.7,795.3 L404.5,793.9 L404.1,793.0 L403.2,792.0 L399.5,790.2 L408.6,769.7 L434.2,714.7 L465.8,646.9"/><path class="st-minor" d="M122.5,-18.2 L99.3,14.0"/><path class="st-minor" d="M186.0,70.4 L99.3,14.0 L60.6,-9.7"/><path class="st-minor" d="M466.1,75.6 L466.8,117.4 L466.2,118.5 L464.9,119.5 L463.1,120.0 L421.5,119.0"/><path class="st-minor" d="M342.5,-76.7 L422.3,-76.2"/><path class="st-minor" d="M567.9,493.0 L551.6,480.2 L530.9,461.9 L520.4,453.0 L506.4,440.9 L468.7,410.3 L452.0,396.0 L431.7,379.1 L392.6,346.0 L377.0,333.3 L356.6,316.1 L345.9,306.0"/><path class="st-minor" d="M832.7,267.8 L817.7,251.7 L798.9,234.8 L784.9,222.4 L759.3,200.4 L744.4,187.5 L704.3,154.5 L692.0,143.9 L655.3,112.0 L616.5,79.7 L601.7,66.7 L570.1,37.8"/><path class="st-minor" d="M997.8,430.0 L973.4,407.9 L931.5,369.3 L918.3,357.0 L889.2,327.3 L862.7,302.7 L855.3,296.1 L842.7,281.1 L832.7,267.8"/><path class="st-minor" d="M257.3,1544.0 L256.9,1513.7 L258.3,1418.4 L256.9,1362.0 L256.4,1323.4 L256.4,1286.2 L256.5,1282.5 L256.3,1178.1 L256.2,1120.5 L256.7,1065.1 L258.1,1045.7 L261.3,1036.4 L264.3,1030.1 L270.1,1021.5 L279.9,1011.7 L299.5,997.6 L323.2,984.9 L341.8,977.7 L362.2,974.0 L379.3,972.3 L386.8,969.8 L394.0,965.7 L399.8,958.8 L407.2,945.5 L416.4,927.5 L423.6,913.8 L435.5,892.3 L444.9,875.4 L452.9,864.1 L464.5,852.8 L481.0,841.0 L503.4,825.8 L517.3,816.7 L524.1,810.8 L529.1,804.9 L544.7,781.9 L548.6,773.8 L580.0,714.6"/><path class="st-minor" d="M360.4,554.9 L360.6,559.1 L361.1,562.5 L361.9,565.3 L362.9,567.8"/><path class="st-minor" d="M358.0,540.9 L417.5,472.2 L468.7,410.3 L479.9,397.0 L516.5,354.5 L537.4,328.5 L578.8,275.6 L638.2,207.8 L692.0,143.9"/><path class="st-minor" d="M1103.4,90.7 L1081.6,105.2 L1058.1,120.6 L1023.7,142.6 L1014.9,148.1 L964.9,180.8 L914.1,213.7 L897.6,224.0 L869.9,241.7 L832.7,267.8 L704.9,379.9 L594.9,473.4 L567.9,493.0 L547.2,500.5 L480.5,520.6 L425.9,536.4 L384.1,548.5 L360.4,554.9"/><path class="st-minor" d="M360.4,554.9 L359.2,551.8 L357.9,548.9 L357.2,546.0 L357.1,543.6 L358.0,540.9"/><path class="st-minor" d="M820.6,487.8 L778.9,447.3 L731.5,400.8"/><path class="st-minor" d="M674.1,424.8 L672.4,425.8 L654.7,442.7 L630.4,464.9 L586.2,501.9"/><path class="st-minor" d="M713.9,532.2 L673.7,500.5 L652.7,483.2 L630.4,464.9"/><path class="st-minor" d="M787.5,-40.9 L857.5,19.0"/><path class="st-minor" d="M565.8,-178.1 L557.0,-105.9 L556.0,-70.1"/><path class="st-minor" d="M635.3,683.1 L650.6,693.7 L660.6,702.4 L671.0,714.6 L704.7,754.5 L707.8,758.1 L714.6,765.8 L738.3,793.0 L750.7,807.2 L767.1,826.3 L798.4,860.2 L806.2,868.4 L811.1,874.3 L815.0,879.9"/><path class="st-minor" d="M524.9,661.3 L524.0,668.2 L522.8,673.5 L521.0,680.2"/><path class="st-minor" d="M559.2,-211.4 L563.0,-239.5"/><path class="st-minor" d="M375.9,221.0 L349.1,221.6"/><path class="st-minor" d="M529.3,80.6 L506.9,63.6 L502.8,57.7 L501.2,52.9 L502.5,47.1 L512.2,27.2"/><path class="st-minor" d="M375.1,192.7 L375.9,221.0 L376.9,243.0 L377.0,245.7 L377.1,248.3 L375.7,251.6 L335.8,297.0"/><path class="st-minor" d="M378.2,-415.3 L388.7,-341.1 L394.0,-304.2 L399.8,-262.9 L410.5,-189.8 L411.8,-180.6 L415.9,-157.9 L417.9,-148.6 L423.5,-120.8 L422.3,-76.2 L422.3,-73.9 L422.1,-66.1 L421.9,-22.7 L422.5,-11.7 L421.0,31.9 L421.7,47.6 L421.8,84.0 L421.5,119.0 L421.3,130.5 L421.1,137.9 L421.5,192.4 L433.5,204.7"/><path class="st-minor" d="M253.1,94.3 L263.2,94.4"/><path class="st-minor" d="M252.9,4.5 L260.6,4.6"/><path class="st-minor" d="M616.1,587.3 L646.7,605.8"/><path class="st-minor" d="M815.6,644.7 L847.4,604.4"/><path class="st-minor" d="M947.3,619.5 L902.8,587.3 L898.0,585.0 L893.0,584.1 L887.1,583.8 L876.2,584.4 L871.3,584.3 L868.8,583.4 L863.7,580.4 L815.3,547.1"/><path class="st-minor" d="M654.7,442.7 L734.6,510.2"/><path class="st-minor" d="M752.4,486.9 L691.4,433.6 L678.2,424.3 L676.7,424.0 L675.4,424.3 L674.1,424.8"/><path class="st-minor" d="M692.9,555.5 L713.9,532.2 L734.6,510.2 L751.7,492.5 L752.7,490.9 L752.9,489.1 L752.8,487.9 L752.4,486.9"/><path class="st-minor" d="M581.2,499.5 L575.6,497.0"/><path class="st-minor" d="M575.6,497.0 L572.2,495.3"/><path class="st-minor" d="M635.3,683.1 L657.8,658.3 L727.7,581.7 L820.6,487.8 L846.3,461.3 L853.7,453.4"/><path class="st-minor" d="M735.9,-153.9 L701.3,-89.5 L662.9,-14.9"/><path class="st-minor" d="M253.4,-27.9 L236.9,-5.1 L229.2,5.6 L207.7,37.7 L194.3,58.2 L186.0,70.4 L125.4,159.9 L104.8,191.1 L34.1,296.6 L8.8,334.3"/><path class="st-minor" d="M572.2,495.3 L567.9,493.0"/><path class="st-minor" d="M127.5,106.2 L81.5,174.3"/><path class="st-minor" d="M54.0,42.9 L80.2,61.2 L82.3,66.7 L82.0,72.6 L36.3,145.0"/><path class="st-minor" d="M479.1,-191.0 L411.8,-180.6"/><path class="st-minor" d="M311.7,630.6 L323.7,635.6 L335.6,641.0"/><path class="st-minor" d="M299.8,656.4 L312.1,662.2 L323.2,667.5"/><path class="st-minor" d="M366.3,623.3 L376.6,599.9"/><path class="st-minor" d="M383.3,628.1 L387.7,613.1 L389.0,608.4 L387.6,607.3 L386.0,606.1 L376.6,599.9 L370.1,595.5 L367.8,594.4 L366.5,594.3 L365.5,594.7 L364.7,595.9 L355.1,617.6"/><path class="st-minor" d="M325.9,604.5 L335.5,608.4 L345.0,612.4"/><path class="st-minor" d="M294.2,703.2 L306.1,675.9 L312.1,662.2 L323.7,635.6 L335.5,608.4 L344.2,595.2"/><path class="st-minor" d="M344.2,595.2 L344.2,593.5 L343.2,592.5 L341.5,592.7 L325.9,604.5 L323.0,607.2 L321.1,609.9 L318.8,615.1 L311.7,630.6 L299.8,656.4 L293.0,671.1 L282.5,693.9 L282.2,695.7 L282.5,697.3 L283.4,698.5 L285.5,699.9 L294.2,703.2 L300.9,705.7 L303.0,706.3 L304.1,706.2 L305.0,705.6 L306.1,703.8 L323.2,667.5 L335.6,641.0 L348.3,614.1"/><path class="st-minor" d="M357.9,583.3 L355.1,589.5 L345.0,612.4 L348.3,614.1 L355.1,617.6 L366.3,623.3 L377.2,628.9 L380.6,629.7 L382.1,629.5 L383.3,628.1"/><path class="st-minor" d="M389.0,608.4 L396.3,613.3 L399.7,615.0 L400.3,613.9 L400.8,612.8 L402.9,608.6"/><path class="st-minor" d="M706.7,671.2 L683.6,650.5 L682.0,650.1 L680.5,650.6 L666.1,666.3"/><path class="st-minor" d="M672.9,707.4 L649.9,686.1 L649.5,684.8 L649.9,683.6 L666.1,666.3"/><path class="st-minor" d="M657.8,658.3 L666.1,666.3 L688.3,687.6"/><path class="st-minor" d="M42.7,597.6 L74.1,594.3 L74.8,599.8"/><path class="st-minor" d="M96.0,666.1 L94.8,655.2"/><path class="st-minor" d="M789.7,654.1 L817.5,678.4"/><path class="st-minor" d="M621.2,519.3 L652.7,483.2"/><path class="st-minor" d="M114.1,344.8 L90.9,380.4 L85.6,387.2"/><path class="st-minor" d="M52.3,363.9 L30.9,384.3 L22.3,387.8 L-10.7,418.9"/><path class="st-minor" d="M249.9,369.9 L240.4,369.9 L179.1,369.8 L177.6,369.4 L176.7,368.0 L177.5,352.9"/><path class="st-minor" d="M517.1,660.0 L524.9,661.3 L569.1,669.2 L613.2,676.8 L635.3,683.1"/><path class="st-minor" d="M260.6,4.6 L326.4,5.6"/><path class="st-minor" d="M248.5,-204.2 L301.1,-211.2"/><path class="st-minor" d="M261.0,204.7 L252.1,204.7"/><path class="st-minor" d="M263.2,94.4 L329.9,94.7"/><path class="st-minor" d="M262.8,30.2 L253.3,30.1"/><path class="st-minor" d="M402.9,608.6 L405.3,603.8"/><path class="st-minor" d="M362.3,573.4 L357.9,583.3"/><path class="st-minor" d="M537.7,86.9 L529.3,80.6"/><path class="st-minor" d="M399.7,615.0 L366.2,695.8"/><path class="st-minor" d="M193.4,548.4 L174.7,567.4"/><path class="st-minor" d="M208.8,565.1 L207.4,562.6 L193.4,548.4 L178.3,533.0 L175.3,532.3"/><path class="st-minor" d="M161.8,636.0 L164.4,628.5 L167.1,621.6 L171.4,613.9"/><path class="st-minor" d="M175.3,532.3 L172.0,533.6 L140.0,566.0 L139.4,567.6 L139.8,569.2 L178.5,610.0 L183.0,609.5 L195.2,601.9 L196.5,599.7 L197.1,597.0 L194.0,586.0 L194.1,584.1 L195.1,582.7 L208.1,567.5 L208.8,565.1"/><path class="st-minor" d="M-36.9,303.1 L-13.1,269.3 L-0.4,251.6"/><path class="st-minor" d="M315.2,205.1 L261.0,204.7"/><path class="st-minor" d="M597.4,-14.1 L604.1,-12.5 L608.4,-14.4 L619.7,-35.3 L619.6,-37.8 L614.1,-44.8"/><path class="st-minor" d="M187.5,-126.5 L242.9,-136.4 L250.1,-137.5"/><path class="st-minor" d="M34.1,296.6 L28.9,291.1 L28.4,290.2 L28.6,289.1 L34.3,278.4 L34.8,276.4 L34.3,274.9 L32.9,273.4 L20.9,271.0"/><path class="st-minor" d="M332.7,30.9 L262.8,30.2"/><path class="st-minor" d="M36.8,45.8 L-10.7,112.5"/><path class="st-minor" d="M-13.9,245.7 L-47.6,296.1"/><path class="st-minor" d="M330.6,153.6 L252.5,150.9"/><path class="st-minor" d="M360.4,554.9 L345.4,560.9"/><path class="st-minor" d="M94.8,655.2 L88.9,602.7 L88.1,601.1 L86.8,600.2 L74.1,594.3 L56.2,585.8 L54.7,585.3 L53.1,585.2 L42.0,586.5"/><path class="st-minor" d="M202.2,533.9 L205.2,523.6 L208.1,516.4 L211.2,507.6 L212.8,497.6 L215.1,486.8 L222.0,478.6"/><path class="st-minor" d="M279.8,665.4 L286.0,668.0 L293.0,671.1 L306.1,675.9"/><path class="st-minor" d="M289.6,586.9 L289.2,586.1 L285.5,579.1"/><path class="st-minor" d="M296.0,599.9 L290.0,587.7 L289.6,586.9"/><path class="st-minor" d="M252.1,724.5 L253.6,721.6 L279.8,665.4 L298.3,624.4 L299.9,618.9 L300.2,615.4 L299.8,610.9 L299.0,606.9 L296.0,599.9"/><path class="st-minor" d="M237.1,741.7 L237.7,744.2"/><path class="st-minor" d="M253.5,739.1 L252.7,736.9 L251.3,735.0 L249.4,733.6 L248.2,733.1 L247.2,732.8 L246.0,732.7 L244.8,732.6 L243.5,732.9"/><path class="st-minor" d="M72.3,760.0 L88.7,727.1 L101.8,713.9 L110.5,707.9 L120.6,704.3 L134.0,701.8 L143.9,701.9 L153.9,703.7 L225.0,732.6 L229.0,733.9"/><path class="st-minor" d="M237.7,744.2 L237.1,747.9 L237.3,756.1"/><path class="st-minor" d="M237.3,756.1 L246.0,749.7"/><path class="st-minor" d="M240.5,734.2 L229.0,733.9"/><path class="st-minor" d="M229.0,733.9 L237.1,741.7"/><path class="st-minor" d="M253.5,739.1 L252.3,730.0 L252.1,724.5"/><path class="st-minor" d="M252.1,724.5 L243.5,732.9"/><path class="st-minor" d="M240.5,734.2 L238.8,735.9 L237.7,737.9 L237.2,740.2 L237.1,741.7"/><path class="st-minor" d="M246.0,749.7 L248.4,749.2 L250.5,748.0 L252.3,746.3 L253.4,744.2 L253.5,739.1"/><path class="st-minor" d="M237.7,744.2 L238.0,745.3 L239.4,747.2 L241.4,748.6 L243.6,749.5 L246.0,749.7"/><path class="st-minor" d="M243.5,732.9 L242.5,733.1 L240.5,734.2"/><path class="st-minor" d="M171.4,613.9 L178.5,610.0"/><path class="st-major" d="M250.6,417.5 L239.4,429.8"/><path class="st-major" d="M309.9,537.6 L312.5,545.6 L313.3,548.6 L313.4,551.1 L312.5,556.8 L310.0,561.8 L307.1,565.6 L296.9,574.2"/><path class="st-major" d="M296.9,574.2 L292.8,575.9 L285.5,579.1 L280.5,581.4 L161.8,636.0 L96.0,666.1 L45.8,688.8 L32.4,694.3 L23.7,697.4 L13.6,699.8 L-8.0,704.2 L-30.0,708.1 L-51.2,711.0 L-73.3,712.8 L-76.5,713.0 L-81.0,713.3 L-91.6,713.4"/><path class="st-major" d="M815.0,879.9 L773.9,876.1 L758.4,873.0 L742.1,867.7 L729.6,862.7 L716.4,856.5 L705.1,850.4 L694.6,844.2 L684.8,837.7 L675.8,830.3 L658.4,813.2 L647.0,799.1 L620.8,763.0 L608.0,743.7 L599.7,732.3 L592.5,724.6 L580.0,714.6"/><path class="st-major" d="M255.3,441.2 L252.9,432.8 L252.0,427.9 L251.1,422.7 L250.6,417.5"/><path class="st-major" d="M265.0,403.8 L256.4,411.3 L250.6,417.5"/><path class="st-major" d="M313.4,565.8 L318.0,561.0 L320.2,556.8 L321.0,554.4 L322.1,549.5 L322.5,545.7"/><path class="st-major" d="M250.6,417.5 L249.7,378.2 L249.9,369.9 L250.3,348.2 L251.3,290.9"/><path class="st-major" d="M251.3,290.9 L252.1,204.7 L252.0,194.1 L252.5,155.4 L252.5,150.9 L253.1,94.3 L253.3,30.1 L253.4,14.9 L252.9,4.5 L253.4,-27.9"/><path class="st-major" d="M239.4,429.8 L216.2,457.1 L213.5,460.7 L207.1,468.6"/><path class="st-major" d="M207.1,468.6 L193.9,459.6 L85.6,387.2 L52.3,363.9 L8.8,334.3 L-19.7,315.1 L-36.9,303.1 L-47.6,296.1 L-68.2,282.6 L-99.6,261.5 L-161.2,220.3 L-179.2,207.8 L-182.2,205.6"/><path class="st-major" d="M343.6,559.6 L334.9,553.8 L331.2,551.4 L322.5,545.7"/><path class="st-major" d="M322.5,545.7 L309.9,537.6"/><path class="st-major" d="M322.5,545.7 L322.6,542.6 L322.4,539.4 L321.1,534.6 L316.3,524.1"/><path class="st-major" d="M283.4,380.6 L265.0,403.8"/><path class="st-major" d="M691.3,-192.3 L678.7,-168.2 L639.4,-90.5"/><path class="st-major" d="M639.4,-90.5 L618.5,-53.0 L614.1,-44.8 L597.4,-14.1 L593.9,-7.5 L579.2,19.8 L577.4,23.2 L575.4,26.9 L570.1,37.8 L564.1,49.4 L556.7,61.2 L537.7,86.9 L461.3,175.7 L433.5,204.7 L404.8,236.8 L401.8,240.2 L398.9,243.4 L371.0,276.5 L345.9,306.0 L283.4,380.6"/><path class="st-major" d="M253.4,-27.9 L253.4,-63.0 L252.9,-117.2 L252.2,-125.3 L250.1,-137.5 L241.3,-189.7 L239.6,-203.1 L217.8,-337.2 L209.9,-387.0"/><path class="st-major" d="M207.1,468.6 L213.1,472.8 L218.4,476.2 L222.0,478.6 L298.1,529.7 L309.9,537.6"/><path class="st-major" d="M316.3,524.1 L310.9,517.5 L280.1,477.0 L261.9,450.8 L255.3,441.2"/><path class="st-major" d="M580.0,714.6 L564.7,704.1 L545.0,693.0 L521.0,680.2"/><path class="st-major" d="M521.0,680.2 L508.2,672.9 L492.4,663.6 L479.4,655.5 L465.8,646.9 L456.6,640.1 L405.3,603.8 L391.3,593.9 L364.4,575.0 L362.3,573.4 L345.4,560.9 L343.6,559.6"/><path class="st-major" d="M296.9,574.2 L313.4,565.8"/><path class="st-target" d="M616.5,79.7 L508.4,212.8 L392.6,346.0 L359.2,385.2 L330.7,419.9 L318.8,434.3 L304.2,451.3 L280.1,477.0"/></g><text class="lbl lbl-t" x="566" y="146" transform="rotate(-51 566 146)" dy="-9">Rua União da Vitória</text><text class="lbl" x="251.7" y="247.8" transform="rotate(-89.4 251.7 247.8)" dy="-9">Rua Mora</text><text class="lbl" x="499.5" y="131.3" transform="rotate(-49.2 499.5 131.3)" dy="-9">Estrada do Pré</text><text class="lbl" x="139.7" y="423.4" transform="rotate(33.8 139.7 423.4)" dy="-9">Estrada do Cabuçu</text></svg>
+        <span class="map-pin" aria-hidden="true"><img src="images/logo.jpeg" alt=""></span>
+        <span class="map-card">
+          <strong>R. União da Vitória, 574</strong>
+          <span>Campo Grande, Rio de Janeiro — RJ</span>
+          <span class="map-cta">Abrir no Google Maps ↗</span>
+        </span>
+        <span class="map-credit">Mapa: © OpenStreetMap</span>
+      </a>
+    </div>
+  </section>
+</main>
+
+<div class="checker-strip"></div>
+<footer>
+  <div class="wrap foot-grid">
+    <a href="#top" class="logo"><img src="images/logo.jpeg" alt="" class="logo-badge">Brothers<em>Burger</em></a>
+    <div class="foot-social">
+      <a href="https://wa.me/5521965325983" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
+      <a href="https://www.instagram.com/brothersburger.rj/" target="_blank" rel="noopener" aria-label="Instagram">📷</a>
+    </div>
+    <span class="foot-note">© <span id="year"></span> Brothers Burger · Campo Grande, RJ</span>
+  </div>
+</footer>
+
+<button class="cart-fab" id="cartFab" onclick="openCart()">
+  🛒 <span id="fabLabel">Meu pedido</span> <span class="badge" id="fabBadge">0</span>
+</button>
+
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<aside class="drawer" id="drawer" aria-label="Carrinho de pedido">
+  <div class="drawer-head">
+    <h3>Seu pedido</h3>
+    <button onclick="closeCart()" aria-label="Fechar">✕</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot" id="drawerFoot" hidden>
+    <div class="totals-row"><span>Subtotal</span><span id="subtotalVal">R$ 0,00</span></div>
+    <div class="totals-row total"><span>Total</span><span id="totalVal">R$ 0,00</span></div>
+    <button class="btn btn-primary" onclick="sendOrder()">Enviar pedido pelo WhatsApp 💬</button>
+  </div>
+</aside>
+
+<div class="overlay" id="optOverlay" onclick="closeOptions()"></div>
+<div class="options-modal" id="optionsModal" aria-label="Escolher opções do item">
+  <div class="options-head">
+    <div><h3 id="optTitle"></h3><p>Escolha as opções pra adicionar ao pedido</p></div>
+    <button onclick="closeOptions()" aria-label="Fechar">✕</button>
+  </div>
+  <div class="options-body" id="optBody"></div>
+  <div class="options-foot">
+    <div class="totals-row total" style="margin-bottom:12px;"><span>Total do item</span><span id="optTotalVal">R$ 0,00</span></div>
+    <button class="btn btn-primary" onclick="confirmOptions()">Adicionar ao carrinho</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<button class="admin-fab" id="adminFab" onclick="openAdmin()" hidden aria-label="Editar cardápio">⚙️ Editar cardápio</button>
+
+<div class="overlay" id="adminOverlay" onclick="closeAdmin()"></div>
+<aside class="drawer" id="adminDrawer" aria-label="Editar preços do cardápio">
+  <div class="drawer-head">
+    <h3>Editar preços</h3>
+    <button onclick="closeAdmin()" aria-label="Fechar">✕</button>
+  </div>
+  <div class="drawer-body" id="adminBody"></div>
+  <div class="drawer-foot">
+    <div id="adminMsg" style="font-size:13px;color:var(--ink-muted);margin-bottom:10px;"></div>
+    <button class="btn btn-primary" id="adminSaveBtn" onclick="saveAdminPrices()">Salvar e publicar no site</button>
+  </div>
+</aside>
+
+<script type="application/json" id="priceData">{}</script>
+
+<script>
+(function(){
+  var PRICE_OVERRIDES = {};
+  try{ PRICE_OVERRIDES = JSON.parse(document.getElementById('priceData').textContent || '{}') || {}; }catch(e){ PRICE_OVERRIDES = {}; }
+  function getPrice(item){ return PRICE_OVERRIDES[item.id] !== undefined ? PRICE_OVERRIDES[item.id] : item.price; }
+
+  var DRINKS = ['Coca-Cola Lata','Coca-Cola Zero Lata','Guaraná Antarctica Lata','Fanta Laranja Lata','Guaracamp','Água com Gás'];
+  var BURGERS = ['Cheeseburger','Quarteirão Artesanal','Brother Tasty Crispy','Brothers Bacon','Chicken Supreme','Coalho Supreme','Smoke-X','Duplo Bacon','OBELISCO','Brother Insano'];
+  var CAT_EMOJI = {artesanais:'🍔', smash:'🧀', tradicional:'🥪', combos:'🍱', compartilhar:'👨‍👩‍👧‍👦', porcoes:'🍟', bebidas:'🥤', doces:'🍩'};
+  var DEFAULT_REMOVABLE = ['Cebola','Molho da casa'];
+  var EXTRAS = [
+    {name:'Bacon extra', price:5},
+    {name:'Queijo cheddar extra', price:4},
+    {name:'Ovo', price:3},
+    {name:'Cebola caramelizada', price:3},
+    {name:'Molho da casa extra', price:0}
+  ];
+  var BURGER_CATS = ['artesanais','smash','tradicional','combos','compartilhar'];
+  function drinkOpt(count){ return {id:'drink', label: count>1 ? 'Escolha '+count+' bebidas' : 'Escolha a bebida', type:'drink', count: count||1}; }
+  function burgerOpt(count){ return {id:'burger', label: count>1 ? 'Escolha '+count+' hambúrgueres' : 'Escolha o hambúrguer', type:'burger', count: count||1}; }
+  function removeOpt(list){ return {id:'remove', label:'Quer tirar algum ingrediente?', type:'remove', choices: list && list.length ? list : DEFAULT_REMOVABLE}; }
+  function extraOpt(){ return {id:'extras', label:'Quer adicionar algo a mais?', type:'extra'}; }
+
+  var MENU = [
+    // Artesanais
+    {id:'cheeseburger', cat:'artesanais', name:'Cheeseburger', desc:'O simples muito bem feito: a melhor opção de pão, carne e queijo.', price:24.99, img:'images/cheeseburger.jpg', removable:['Queijo']},
+    {id:'quarteirao', cat:'artesanais', name:'Quarteirão Artesanal', desc:'Pão brioche, 1 carne suculenta, 4 fatias de American cheese, picles, cebola picada, ketchup e mostarda.', price:30.99, img:'images/quarteirao.jpg', removable:['Picles','Cebola picada','Ketchup','Mostarda']},
+    {id:'tasty-crispy', cat:'artesanais', name:'Brother Tasty Crispy', desc:'Pão brioche, 1 carne suculenta, 4 fatias de American cheese, alface, tomate, cebola crispy e muito molho tasty.', price:30.99, img:'images/tasty-crispy.jpg', removable:['Alface','Tomate','Cebola crispy','Molho tasty']},
+    {id:'brothers-bacon', cat:'artesanais', name:'Brothers Bacon', desc:'Pão australiano, carne suculenta, cheddar cremoso, cebola caramelizada e bacon.', price:30.99, img:'images/brothers-bacon.jpg', removable:['Cheddar cremoso','Cebola caramelizada','Bacon']},
+    {id:'chicken-supreme', cat:'artesanais', name:'Chicken Supreme', desc:'Pão brioche selado na manteiga, chicken supreme Seara, American cheese, bacon crocante, molho tasty, picles, alface e cebola.', price:32.99, img:'images/chicken-supreme.jpg', removable:['American cheese','Bacon crocante','Molho tasty','Picles','Alface','Cebola']},
+    {id:'coalho-supreme', cat:'artesanais', name:'Coalho Supreme', desc:'Pão brioche, carne de 160g, American cheese, queijo coalho chapeado e geleia de bacon.', price:35.99, img:'images/coalho-supreme.jpg', removable:['American cheese','Queijo coalho','Geleia de bacon']},
+    {id:'smoke-x', cat:'artesanais', name:'Smoke-X', desc:'X-pão selado, carne de 200g defumada em madeiras frutíferas, mussarela e cheddar, bacon crocante, cebola caramelizada e barbecue especial.', price:39.99, img:'images/smoke-x.jpg', removable:['Mussarela e cheddar','Bacon crocante','Cebola caramelizada','Barbecue']},
+    {id:'duplo-bacon', cat:'artesanais', name:'Duplo Bacon', desc:'Famoso exterminador de fomes: pão brioche, 2 carnes suculentas com American cheese maçaricado e bacon.', price:44.99, img:'images/duplo-bacon.jpg', removable:['American cheese','Bacon']},
+    {id:'obelisco', cat:'artesanais', name:'OBELISCO', desc:'Pão brioche, 4 blends de 100g com American cheese e tiras de bacon crocante.', price:49.99, img:'images/obelisco.png', removable:['American cheese','Bacon crocante']},
+    {id:'brother-insano', cat:'artesanais', name:'Brother Insano', desc:'Pão tostado na manteiga, 100g de carne suculenta, duas fatias de queijo americano, bacon crocante e blend especial empanado de catupiry.', price:49.99, img:'images/brother-insano.jpg', removable:['Queijo americano','Bacon crocante','Catupiry empanado']},
+
+    // Smash
+    {id:'smash-refri', cat:'smash', name:'Smash Burguer + Refri com Fritas Grátis', desc:'Economize até R$10 nesse combo. Apenas para delivery e retirada.', price:39.99, img:'images/smash-refri.png', options:[drinkOpt(1)]},
+    {id:'duplo-cheddar-smash', cat:'smash', name:'Duplo Cheddar Melt Smash', desc:'2 carnes de 70g cada, nosso cheddar melt e cebola caramelizada feita na casa.', price:30.99, img:'images/duplo-cheddar-smash.png', removable:['Cheddar melt','Cebola caramelizada']},
+    {id:'duplo-onion-smash', cat:'smash', name:'Duplo Onion Bacon Smash', desc:'2 carnes de 70g cada, American cheese maçaricado, bacon crocante, 2 onion rings e maionese da casa.', price:34.99, img:'images/duplo-onion-smash.png', removable:['American cheese','Bacon crocante','Onion rings','Maionese da casa']},
+    {id:'triplo-cheddar-smash', cat:'smash', name:'Triplo Cheddar Bacon Crispe Smash', desc:'3 smash de 70g cada, cheddar em fatia e cremoso, bacon crocante e cebola crispy.', price:37.99, img:'images/triplo-cheddar-smash.jpg', removable:['Cheddar em fatia','Cheddar cremoso','Bacon crocante','Cebola crispy']},
+
+    // Tradicional (carnes 56g)
+    {id:'trad-1', cat:'tradicional', name:'Burguer Tradicional 1 Carne', desc:'Carne de 56g.', price:12.99, priceFrom:true, img:'images/trad-1.jpg'},
+    {id:'trad-2', cat:'tradicional', name:'Burguer Tradicional 2 Carnes', desc:'Carnes de 56g cada.', price:19.99, priceFrom:true, img:'images/trad-2.jpg'},
+    {id:'trad-3', cat:'tradicional', name:'Burguer Tradicional 3 Carnes', desc:'Carnes de 56g cada.', price:22.99, priceFrom:true, img:'images/trad-3.jpg'},
+
+    // Combos individuais
+    {id:'hamburguer-refri', cat:'combos', name:'Hambúrguer + Refri + Fritas Grátis', desc:'Economize até R$10: escolha o hambúrguer e a bebida, as fritas são por nossa conta.', price:42.99, img:'images/hamburguer-refri.jpg', options:[burgerOpt(1), drinkOpt(1)]},
+    {id:'cheeseburger-fritas', cat:'combos', name:'Cheeseburger (Artesanal) + Fritas Grátis', desc:'O simples muito bem feito, com fritas por nossa conta.', price:32.99, img:'images/cheeseburger-fritas.jpg', removable:['Queijo']},
+    {id:'duplo-cheddar-fritas', cat:'combos', name:'Duplo Cheddar Melt Smash + Fritas Grátis', desc:'2 carnes 70g, cheddar melt e cebola caramelizada, com fritas grátis.', price:34.99, img:'images/duplo-cheddar-fritas.png', removable:['Cheddar melt','Cebola caramelizada']},
+    {id:'quarteirao-fritas', cat:'combos', name:'Quarteirão Artesanal + Fritas Grátis', desc:'Pão brioche, 1 carne suculenta e 4 fatias de American cheese, com fritas grátis.', price:36.99, img:'images/quarteirao-fritas.jpg', removable:['Picles','Cebola picada','Ketchup','Mostarda']},
+    {id:'el-parrillero', cat:'combos', name:'El Parrillero + Fritas Grátis', desc:'Pão brioche macio, blend artesanal de 100g, queijo provolone e chimichurri da casa levemente apimentado. Fritas por nossa conta.', price:39.99, img:'images/el-parrillero.png', removable:['Queijo provolone','Chimichurri']},
+    {id:'tasty-crispe-combo', cat:'combos', name:'Combo Tasty Crispe 100g + Fritas e Bebida Grátis', desc:'Pão brioche macio, carne suculenta, 4 fatias de queijo American, alface, tomate e cebola crispy.', price:44.99, img:'images/tasty-crispe-combo.jpg', options:[drinkOpt(1)], removable:['Alface','Tomate','Cebola crispy']},
+    {id:'chicken-supreme-combo', cat:'combos', name:'Combo Chicken Supreme + Fritas e Bebida Grátis', desc:'Pão brioche selado na manteiga, chicken supreme Seara, American cheese, bacon e molho tasty.', price:44.99, img:'images/chicken-supreme-combo.jpg', options:[drinkOpt(1)], removable:['American cheese','Bacon','Molho tasty']},
+    {id:'duplo-bacon-combo', cat:'combos', name:'Combo Duplo Bacon 100g + Fritas e Bebida Grátis', desc:'Pão selado na manteiga, 2 blends suculentos de fraldinha, American cheese e bacon generoso.', price:59.99, img:'images/duplo-bacon-combo.jpg', options:[drinkOpt(1)], removable:['American cheese','Bacon']},
+    {id:'smash-triplo-combo', cat:'combos', name:'Smash Triplo Cheddar Bacon Crispe + Fritas e Bebida Grátis', desc:'3 smash de 70g, cheddar em fatia e cremoso, bacon crocante e cebola crispy.', price:52.99, img:'images/triplo-cheddar-smash.jpg', options:[drinkOpt(1)], removable:['Cheddar em fatia','Cheddar cremoso','Bacon crocante','Cebola crispy']},
+    {id:'smoke-x-combo', cat:'combos', name:'Smoke-X (Defumado) + Batata e Bebida Grátis', desc:'X-pão selado, 200g defumado em madeiras frutíferas, cheddar, mussarela, bacon e barbecue especial.', price:54.99, img:'images/smoke-x.jpg', options:[drinkOpt(1)], removable:['Mussarela e cheddar','Bacon crocante','Barbecue']},
+    {id:'obelisco-combo', cat:'combos', name:'OBELISCO + Batata e Bebida Grátis', desc:'4 blends de 100g com American cheese e bacon crocante, fritas e bebida por nossa conta.', price:59.99, img:'images/obelisco.png', options:[drinkOpt(1)], removable:['American cheese','Bacon crocante']},
+    {id:'trad1-combo', cat:'combos', name:'Tradicional 1 Carne + Fritas e Bebida Grátis', desc:'Carne de 56g, com fritas e bebida grátis.', price:24.99, priceFrom:true, img:'images/trad1-combo.jpg', options:[drinkOpt(1)]},
+    {id:'trad2-combo', cat:'combos', name:'Tradicional 2 Carnes + Fritas e Bebida Grátis', desc:'Carnes de 56g cada, com fritas e bebida grátis.', price:32.99, priceFrom:true, img:'images/trad2-combo.jpg', options:[drinkOpt(1)]},
+    {id:'trad3-combo', cat:'combos', name:'Tradicional 3 Carnes + Fritas e Bebida Grátis', desc:'Carnes de 56g cada, com fritas e bebida grátis.', price:36.99, priceFrom:true, img:'images/trad3-combo.jpg', options:[drinkOpt(1)]},
+    {id:'dois-artesanais', cat:'combos', name:'2 Artesanais + Batata Grátis', desc:'2 hambúrgueres artesanais à sua escolha + 1 porção de fritas de graça.', price:69.99, img:'images/dois-artesanais.jpeg', options:[burgerOpt(2)]},
+
+    // Pra compartilhar
+    {id:'jantar2', cat:'compartilhar', name:'Jantar Completo pra 2', desc:'2 hambúrgueres Big (pão, 2 carnes, 2 queijos, alface, tomate e molho especial) + 1 batata pequena + 2 bebidas grátis.', price:49.99, img:'images/jantar2.jpg', options:[drinkOpt(2)], removable:['Queijos','Alface','Tomate','Molho especial']},
+    {id:'combo2tri', cat:'compartilhar', name:'Combo 2 Tri + 1 Batata + 2 Bebidas Grátis', desc:'2 hambúrgueres Tri (pão, 3 carnes, 3 queijos, alface, tomate e molho especial) + 1 batata pequena + 2 bebidas.', price:59.99, img:'images/combo2tri.jpg', options:[drinkOpt(2)], removable:['Queijos','Alface','Tomate','Molho especial']},
+    {id:'combo4tri', cat:'compartilhar', name:'Combo 4 Tri + 2 Batatas + 2 Bebidas Grátis', desc:'4 hambúrgueres Tri (pão, 3 carnes, 3 queijos, alface, tomate e molho especial) + 2 batatas pequenas + 2 bebidas.', price:72.99, img:'images/combo4tri.png', options:[drinkOpt(2)], removable:['Queijos','Alface','Tomate','Molho especial']},
+    {id:'combo-familia', cat:'compartilhar', name:'Combo Pra Família', desc:'3 Big Brothers + batata frita + onion rings + nuggets supremo + bebida. Pra comer com a família toda.', price:74.99, img:'images/combo-familia.jpg'},
+    {id:'box-familia-trad', cat:'compartilhar', name:'Box Combo Pra Família (Tradicional)', desc:'3 Duplo Cheeseburguer (tradicional) + fritas + 6 nuggets + 6 onion rings + 3 molhos.', price:69.99, img:'images/box-familia-trad.jpg'},
+    {id:'box-triplo-cheeseburguer', cat:'compartilhar', name:'Box Triplo Cheeseburguer Família', desc:'Pra 3 a 4 pessoas: 3 triplo cheeseburguer (tradicional) + fritas + 6 nuggets + 6 onion rings + 3 molhos.', price:74.99, img:'images/box-triplo-cheeseburguer.jpg'},
+    {id:'box-duplo-picanha', cat:'compartilhar', name:'Box Duplo Cheese-Picanha Família', desc:'Pra 3 a 4 pessoas: 3 duplo cheese-picanha (tradicional) + fritas + 6 nuggets + 6 onion rings + 3 molhos.', price:79.99, img:'images/box-triplo-cheese-picanha.jpg'},
+    {id:'box-triplo-picanha', cat:'compartilhar', name:'Box Triplo Cheese-Picanha Família', desc:'Pra 3 a 4 pessoas: 3 triplo cheese-picanha (tradicional) + fritas + 6 nuggets + 6 onion rings + 3 molhos.', price:109.99, img:'images/box-triplo-cheese-picanha.jpg'},
+    {id:'monte-seu-box', cat:'compartilhar', name:'Monte seu Box Artesanal', desc:'Pra 3 a 4 pessoas: 3 hambúrgueres artesanais 100g à sua escolha + fritas + 6 nuggets + 6 onion rings + 3 molhos.', price:99.99, img:'images/monte-seu-box.jpg', options:[burgerOpt(3)]},
+
+    // Porções
+    {id:'bolinho-mandioca', cat:'porcoes', name:'Bolinho de Mandioca com Carne Curada', desc:'Porção com 6 unidades, recheados com carne curada e geleia de pimenta.', price:22.90, img:'images/bolinho-mandioca.jpg'},
+    {id:'coxinhas', cat:'porcoes', name:'Coxinhas McCain SureCrisp', desc:'Porção com 6 unidades, recheio cremoso de frango com requeijão e molho especial.', price:17.99, img:'images/coxinhas.png'},
+    {id:'sticker-coalho', cat:'porcoes', name:"Sticker's de Queijo Coalho Supreme", desc:'Queijo coalho empanado e frito na medida certa pra ficar crocante, com goiabada. Aprox. 130g.', price:14.99, img:'images/sticker-coalho.jpg'},
+    {id:'nuggets', cat:'porcoes', name:'Nuggets', desc:'Porção de nuggets, 6 unidades.', price:12.99, img:'images/nuggets.png'},
+    {id:'onion-rings', cat:'porcoes', name:'Onion Rings', desc:'Porção de onion rings, 6 unidades.', price:12.99, img:'images/onion-rings.png'},
+    {id:'batata-catupiry-bacon', cat:'porcoes', name:'Batata Frita Catupiry e Bacon', desc:'Batata crocante coberta com catupiry cremoso e bacon.', price:29.99, img:'images/batata-catupiry-bacon.png'},
+    {id:'batata-cheddar-bacon', cat:'porcoes', name:'Batata Frita Cheddar Bacon', desc:'Porção generosa pra 2 a 3 pessoas, coberta com cheddar cremoso e bacon.', price:29.99, img:'images/batata-cheddar-bacon.jpg'},
+    {id:'batata-gg', cat:'porcoes', name:'Batata Frita GG', desc:'Pra 2 a 3 pessoas.', price:21.99, img:'images/batata-gg.png'},
+    {id:'batata-g', cat:'porcoes', name:'Batata Frita G', desc:'Aproximadamente 180g.', price:14.99, img:'images/batata-g.png'},
+    {id:'batata-gg-bacon', cat:'porcoes', name:'Batata Frita GG com Bacon', desc:'Aproximadamente 350g.', price:25.99, img:'images/batata-gg-bacon.png'},
+    {id:'batata-p', cat:'porcoes', name:'Batata Frita P', desc:'Aproximadamente 100g.', price:10.99, img:'images/batata-p.png'},
+    {id:'maionese-bisnaga', cat:'porcoes', name:'Bisnaga de Maionese de Alho', desc:'Bisnaga com 200ml.', price:14.99, img:'images/maionese-bisnaga.png'},
+    {id:'maionese-30', cat:'porcoes', name:'Maionese de Alho 30ml', desc:'Porção individual de 30ml.', price:1.79, img:'images/maionese-bisnaga.png'},
+
+    // Bebidas
+    {id:'coca-lata', cat:'bebidas', name:'Coca-Cola Lata', desc:'350ml.', price:5.99, img:'images/coca-lata.webp'},
+    {id:'coca-zero-lata', cat:'bebidas', name:'Coca-Cola Zero Lata', desc:'350ml.', price:5.99, img:'images/coca-zero-lata.png'},
+    {id:'guarana-lata', cat:'bebidas', name:'Guaraná Antarctica Lata', desc:'350ml.', price:5.99, img:'images/guarana-lata.png'},
+    {id:'fanta-laranja-lata', cat:'bebidas', name:'Fanta Laranja Lata', desc:'350ml.', price:5.99, img:'images/fanta-laranja-lata.jpg'},
+    {id:'guaracamp', cat:'bebidas', name:'Guaracamp', desc:'287ml.', price:1.99, img:'images/guaracamp.png'},
+    {id:'agua-gas', cat:'bebidas', name:'Água com Gás', desc:'500ml.', price:3.99, img:'images/agua-gas.jpg'},
+    {id:'coca-15', cat:'bebidas', name:'Coca-Cola 1,5L', desc:'Garrafa 1,5 litro.', price:12.99, img:'images/coca-15.jpg'},
+    {id:'coca-zero-15', cat:'bebidas', name:'Coca-Cola Zero 1,5L', desc:'Zero açúcar, 1,5 litro.', price:12.99, img:'images/coca-zero-15.png'},
+    {id:'guarana-15', cat:'bebidas', name:'Guaraná Antarctica 1,5L', desc:'Garrafa 1,5 litro.', price:12.99, img:'images/guarana-15.png'},
+    {id:'fanta-uva-15', cat:'bebidas', name:'Fanta Uva 1,5L', desc:'Garrafa 1,5 litro.', price:12.99, img:'images/fanta-uva-15.png'},
+    {id:'fanta-laranja-15', cat:'bebidas', name:'Fanta Laranja 1,5L', desc:'Garrafa 1,5 litro.', price:12.99, img:'images/fanta-laranja-15.png'},
+    {id:'sprite-15', cat:'bebidas', name:'Sprite 1,5L', desc:'Garrafa 1,5 litro.', price:12.99, img:'images/sprite-15.jpg'},
+
+    // Doces
+    {id:'waffle', cat:'doces', name:'Waffle Nutella & Morango', desc:'Dois wafles quentinhos, crocantes por fora, recheados com Nutella derretida e morango fresco.', price:19.90, img:'images/waffle.png'}
+  ];
+
+  // Todo hambúrguer/combo permite tirar ingrediente ou adicionar algo a mais
+  MENU.forEach(function(item){
+    if(BURGER_CATS.indexOf(item.cat) === -1) return;
+    item.options = (item.options || []).concat([removeOpt(item.removable), extraOpt()]);
+  });
+
+  var WHATSAPP = '5521965325983';
+  var cart = {};
+  var activeCat = 'todos';
+  var fulfillment = 'entrega';
+  var paymentMethod = 'dinheiro';
+  var pendingItem = null;
+  function paymentLabel(p){
+    if(p === 'cartao') return 'Cartão (débito/crédito)';
+    if(p === 'pix') return 'Pix';
+    return 'Dinheiro';
+  }
+
+  function money(v){ return 'R$ ' + v.toFixed(2).replace('.', ','); }
+
+  function loadCart(){
+    try{
+      var raw = localStorage.getItem('brothers_cart');
+      var parsed = raw ? JSON.parse(raw) : {};
+      var valid = parsed && typeof parsed === 'object';
+      if(valid){
+        Object.keys(parsed).forEach(function(k){
+          if(!parsed[k] || typeof parsed[k] !== 'object' || typeof parsed[k].qty !== 'number') valid = false;
+        });
+      }
+      cart = valid ? parsed : {};
+    }catch(e){ cart = {}; }
+  }
+  function saveCart(){
+    try{ localStorage.setItem('brothers_cart', JSON.stringify(cart)); }catch(e){}
+  }
+
+  function renderMenu(){
+    var grid = document.getElementById('menuGrid');
+    grid.innerHTML = '';
+    MENU.filter(function(item){ return activeCat === 'todos' || item.cat === activeCat; })
+      .forEach(function(item){
+        var card = document.createElement('div');
+        card.className = 'card reveal is-visible';
+        var media = item.img
+          ? '<img src="' + item.img + '" alt="' + item.name + '" loading="lazy">'
+          : '<div class="card-placeholder">' + (CAT_EMOJI[item.cat] || '🍔') + '</div>';
+        var priceHtml = '<span class="price-wrap"><span class="price">' + (item.priceFrom ? 'a partir de ' : '') + money(getPrice(item)) + '</span></span>';
+        card.innerHTML =
+          '<div class="card-media"><span class="card-tag">' + tagLabel(item.cat) + '</span>' + media + '</div>' +
+          '<div class="card-body">' +
+            '<h3>' + item.name + '</h3>' +
+            '<p>' + item.desc + '</p>' +
+            '<div class="card-foot">' + priceHtml +
+            '<button class="add-btn" data-id="' + item.id + '" aria-label="Adicionar ' + item.name + '">+</button></div>' +
+          '</div>';
+        grid.appendChild(card);
+      });
+    grid.querySelectorAll('.add-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){ addToCart(btn.dataset.id, btn); });
+    });
+  }
+
+  function tagLabel(cat){
+    if(cat === 'artesanais') return 'Artesanal';
+    if(cat === 'smash') return 'Smash';
+    if(cat === 'tradicional') return 'Tradicional';
+    if(cat === 'combos') return 'Combo';
+    if(cat === 'compartilhar') return 'Pra Compartilhar';
+    if(cat === 'porcoes') return 'Porção';
+    if(cat === 'bebidas') return 'Bebida';
+    if(cat === 'doces') return 'Doce';
+    return '';
+  }
+
+  function cartKeyFor(id, selections){
+    return id + (selections ? '::' + JSON.stringify(selections) : '');
+  }
+
+  function addCartLine(id, selections, extraUnit){
+    var key = cartKeyFor(id, selections);
+    if(cart[key]) cart[key].qty += 1;
+    else cart[key] = {id:id, qty:1, selections: selections || null, extraUnit: extraUnit || 0};
+    saveCart();
+    updateCartUI();
+  }
+
+  function bumpFab(){
+    var fab = document.getElementById('cartFab');
+    fab.classList.remove('bump'); void fab.offsetWidth; fab.classList.add('bump');
+  }
+
+  function addToCart(id, btnEl){
+    var item = MENU.find(function(m){ return m.id === id; });
+    if(!item) return;
+    if(item.options && item.options.length){
+      openOptions(item);
+      return;
+    }
+    addCartLine(id, null);
+    showToast('Adicionado ao pedido ✓');
+    bumpFab();
+    if(btnEl){
+      btnEl.classList.add('added'); btnEl.textContent = '✓';
+      setTimeout(function(){ btnEl.classList.remove('added'); btnEl.textContent = '+'; }, 900);
+    }
+  }
+
+  function openOptions(item){
+    pendingItem = item;
+    document.getElementById('optTitle').textContent = item.name;
+    var body = document.getElementById('optBody');
+    body.innerHTML = '';
+    item.options.forEach(function(group, gi){
+      var wrap = document.createElement('div');
+      wrap.className = 'opt-group';
+      if(group.type === 'drink' || group.type === 'burger'){
+        var choices = group.type === 'drink' ? DRINKS : BURGERS;
+        var selects = '';
+        for(var i=0;i<group.count;i++){
+          selects += '<select data-group="' + gi + '">' + choices.map(function(c,ci){ return '<option value="' + c + '"' + (i===ci?' selected':'') + '>' + c + '</option>'; }).join('') + '</select>';
+        }
+        wrap.innerHTML = '<span class="grp-label">' + group.label + '</span>' + selects;
+      } else if(group.type === 'remove'){
+        var boxes = group.choices.map(function(name, ii){
+          return '<label class="chk-row"><input type="checkbox" data-group="' + gi + '" value="' + name + '" checked><span>' + name + '</span></label>';
+        }).join('');
+        wrap.innerHTML = '<span class="grp-label">' + group.label + '</span>' + boxes;
+      } else if(group.type === 'extra'){
+        var eboxes = EXTRAS.map(function(ex, ii){
+          return '<label class="chk-row"><input type="checkbox" data-group="' + gi + '" value="' + ex.name + '" data-price="' + ex.price + '"><span>' + ex.name + (ex.price ? ' (+' + money(ex.price) + ')' : ' (grátis)') + '</span></label>';
+        }).join('');
+        wrap.innerHTML = '<span class="grp-label">' + group.label + '</span>' + eboxes;
+      }
+      body.appendChild(wrap);
+    });
+    updateOptTotal();
+    body.querySelectorAll('input[type="checkbox"]').forEach(function(chk){
+      chk.addEventListener('change', updateOptTotal);
+    });
+    document.getElementById('optOverlay').classList.add('open');
+    document.getElementById('optionsModal').classList.add('open');
+  }
+
+  function updateOptTotal(){
+    if(!pendingItem) return;
+    var extra = 0;
+    document.querySelectorAll('#optBody input[type="checkbox"][data-price]').forEach(function(chk){
+      if(chk.checked) extra += Number(chk.dataset.price) || 0;
+    });
+    document.getElementById('optTotalVal').textContent = money(getPrice(pendingItem) + extra);
+  }
+
+  window.closeOptions = function(){
+    document.getElementById('optOverlay').classList.remove('open');
+    document.getElementById('optionsModal').classList.remove('open');
+    pendingItem = null;
+  };
+
+  window.confirmOptions = function(){
+    if(!pendingItem) return;
+    var selections = {};
+    var extraUnit = 0;
+    pendingItem.options.forEach(function(group, gi){
+      if(group.type === 'drink' || group.type === 'burger'){
+        var vals = [];
+        document.querySelectorAll('#optBody select[data-group="' + gi + '"]').forEach(function(sel){ vals.push(sel.value); });
+        selections[group.id] = vals;
+      } else if(group.type === 'remove'){
+        var removed = [];
+        document.querySelectorAll('#optBody input[data-group="' + gi + '"]').forEach(function(chk){ if(!chk.checked) removed.push(chk.value); });
+        if(removed.length) selections.removed = removed;
+      } else if(group.type === 'extra'){
+        var added = [];
+        document.querySelectorAll('#optBody input[data-group="' + gi + '"]').forEach(function(chk){
+          if(chk.checked){ added.push(chk.value); extraUnit += Number(chk.dataset.price) || 0; }
+        });
+        if(added.length) selections.extras = added;
+      }
+    });
+    addCartLine(pendingItem.id, Object.keys(selections).length ? selections : null, extraUnit);
+    showToast('Adicionado ao pedido ✓');
+    bumpFab();
+    window.closeOptions();
+  };
+
+  function selectionsSummary(selections){
+    if(!selections) return '';
+    var parts = [];
+    Object.keys(selections).forEach(function(k){
+      if(k === 'removed') parts.push('Sem ' + selections[k].join(', '));
+      else if(k === 'extras') parts.push('Com ' + selections[k].join(', '));
+      else parts.push(selections[k].join(', '));
+    });
+    return parts.join(' · ');
+  }
+
+  function unitPrice(item, line){
+    return getPrice(item) + (line && line.extraUnit ? line.extraUnit : 0);
+  }
+
+  function changeQty(key, delta){
+    if(!cart[key]) return;
+    cart[key].qty += delta;
+    if(cart[key].qty <= 0) delete cart[key];
+    saveCart();
+    updateCartUI();
+  }
+
+  function removeItem(key){
+    delete cart[key];
+    saveCart();
+    updateCartUI();
+  }
+
+  function cartCount(){
+    return Object.values(cart).reduce(function(a,line){ return a + line.qty; }, 0);
+  }
+  function cartTotal(){
+    return Object.keys(cart).reduce(function(sum,key){
+      var line = cart[key];
+      var item = MENU.find(function(m){ return m.id === line.id; });
+      return sum + (item ? unitPrice(item, line) * line.qty : 0);
+    }, 0);
+  }
+
+  function updateCartUI(){
+    var count = cartCount();
+    document.getElementById('fabBadge').textContent = count;
+    var body = document.getElementById('drawerBody');
+    var foot = document.getElementById('drawerFoot');
+    body.innerHTML = '';
+    var keys = Object.keys(cart);
+    if(keys.length === 0){
+      body.innerHTML = '<div class="cart-empty"><span class="em">🍔</span>Seu carrinho está vazio.<br>Que tal escolher um hambúrguer?</div>';
+      foot.hidden = true;
+      return;
+    }
+    foot.hidden = false;
+    keys.forEach(function(key){
+      var line = cart[key];
+      var item = MENU.find(function(m){ return m.id === line.id; });
+      if(!item) return;
+      var qty = line.qty;
+      var thumb = item.img ? '<img src="' + item.img + '" alt="' + item.name + '">' : '<div class="cart-thumb-ph">' + (CAT_EMOJI[item.cat] || '🍔') + '</div>';
+      var summary = selectionsSummary(line.selections);
+      var row = document.createElement('div');
+      row.className = 'cart-item';
+      row.innerHTML =
+        thumb +
+        '<div class="ci-info">' +
+          '<h4>' + item.name + '</h4>' +
+          (summary ? '<span class="ci-price" style="color:var(--accent);">' + summary + '</span>' : '') +
+          '<span class="ci-price">' + money(unitPrice(item, line)) + '</span>' +
+          '<div class="qty-ctrl">' +
+            '<button data-act="minus" aria-label="Diminuir">−</button>' +
+            '<span>' + qty + '</span>' +
+            '<button data-act="plus" aria-label="Aumentar">+</button>' +
+          '</div>' +
+          '<button class="ci-remove" data-act="remove">remover</button>' +
+        '</div>';
+      row.querySelector('[data-act="minus"]').addEventListener('click', function(){ changeQty(key, -1); });
+      row.querySelector('[data-act="plus"]').addEventListener('click', function(){ changeQty(key, 1); });
+      row.querySelector('[data-act="remove"]').addEventListener('click', function(){ removeItem(key); });
+      body.appendChild(row);
+    });
+
+    var formWrap = document.createElement('div');
+    formWrap.className = 'drawer-form';
+    formWrap.innerHTML =
+      '<div class="seg" id="fulfillSeg">' +
+        '<button data-val="entrega" class="' + (fulfillment==='entrega'?'active':'') + '">Entrega</button>' +
+        '<button data-val="retirada" class="' + (fulfillment==='retirada'?'active':'') + '">Retirada</button>' +
+      '</div>' +
+      '<div class="field"><label for="custName">Seu nome</label><input id="custName" type="text" placeholder="Como podemos te chamar?"></div>' +
+      '<div class="field" id="addrField"><label for="custAddr">Endereço de entrega</label><input id="custAddr" type="text" placeholder="Rua, número, bairro"></div>' +
+      '<div class="field"><label>Forma de pagamento</label><div class="seg" id="paymentSeg">' +
+        '<button data-val="dinheiro" class="' + (paymentMethod==='dinheiro'?'active':'') + '">Dinheiro</button>' +
+        '<button data-val="cartao" class="' + (paymentMethod==='cartao'?'active':'') + '">Cartão</button>' +
+        '<button data-val="pix" class="' + (paymentMethod==='pix'?'active':'') + '">Pix</button>' +
+      '</div></div>' +
+      '<div class="field" id="changeField"><label for="custChange">Vai pagar com quanto? (pra levar o troco certo)</label><input id="custChange" type="text" placeholder="Ex: R$ 50,00 — deixe em branco se for valor exato"></div>' +
+      '<div class="field"><label for="custNote">Observações</label><textarea id="custNote" placeholder="Ponto da carne, sem cebola, etc."></textarea></div>';
+    body.appendChild(formWrap);
+
+    formWrap.querySelectorAll('#fulfillSeg button').forEach(function(b){
+      b.addEventListener('click', function(){
+        fulfillment = b.dataset.val;
+        document.getElementById('addrField').style.display = fulfillment === 'entrega' ? 'block' : 'none';
+        formWrap.querySelectorAll('#fulfillSeg button').forEach(function(x){ x.classList.remove('active'); });
+        b.classList.add('active');
+      });
+    });
+    document.getElementById('addrField').style.display = fulfillment === 'entrega' ? 'block' : 'none';
+
+    formWrap.querySelectorAll('#paymentSeg button').forEach(function(b){
+      b.addEventListener('click', function(){
+        paymentMethod = b.dataset.val;
+        document.getElementById('changeField').style.display = paymentMethod === 'dinheiro' ? 'block' : 'none';
+        formWrap.querySelectorAll('#paymentSeg button').forEach(function(x){ x.classList.remove('active'); });
+        b.classList.add('active');
+      });
+    });
+    document.getElementById('changeField').style.display = paymentMethod === 'dinheiro' ? 'block' : 'none';
+
+    document.getElementById('subtotalVal').textContent = money(cartTotal());
+    document.getElementById('totalVal').textContent = money(cartTotal());
+  }
+
+  function sendOrder(){
+    if(cartCount() === 0) return;
+    var name = (document.getElementById('custName') || {}).value || '';
+    var addr = (document.getElementById('custAddr') || {}).value || '';
+    var note = (document.getElementById('custNote') || {}).value || '';
+    var change = (document.getElementById('custChange') || {}).value || '';
+    var lines = ['Olá, Brothers Burger! 👋 Quero fazer esse pedido:', ''];
+    Object.keys(cart).forEach(function(key){
+      var line = cart[key];
+      var item = MENU.find(function(m){ return m.id === line.id; });
+      if(!item) return;
+      var summary = selectionsSummary(line.selections);
+      lines.push(line.qty + 'x ' + item.name + (summary ? ' (' + summary + ')' : '') + ' — ' + money(unitPrice(item, line) * line.qty));
+    });
+    lines.push('');
+    lines.push('Total: ' + money(cartTotal()));
+    lines.push('Forma: ' + (fulfillment === 'entrega' ? 'Entrega' : 'Retirada no local'));
+    lines.push('Pagamento: ' + paymentLabel(paymentMethod));
+    if(paymentMethod === 'dinheiro') lines.push('Troco para: ' + (change ? change : 'não precisa, valor exato'));
+    if(name) lines.push('Nome: ' + name);
+    if(fulfillment === 'entrega' && addr) lines.push('Endereço: ' + addr);
+    if(note) lines.push('Obs: ' + note);
+    var msg = encodeURIComponent(lines.join('\n'));
+    window.open('https://wa.me/' + WHATSAPP + '?text=' + msg, '_blank');
+  }
+  window.sendOrder = sendOrder;
+
+  window.openCart = function(){
+    document.getElementById('overlay').classList.add('open');
+    document.getElementById('drawer').classList.add('open');
+  };
+  window.closeCart = function(){
+    document.getElementById('overlay').classList.remove('open');
+    document.getElementById('drawer').classList.remove('open');
+  };
+
+  window.toggleMobile = function(open){
+    document.getElementById('mobilePanel').classList.toggle('open', open);
+  };
+
+  function showToast(text){
+    var t = document.getElementById('toast');
+    t.textContent = text;
+    t.classList.add('show');
+    clearTimeout(showToast._tm);
+    showToast._tm = setTimeout(function(){ t.classList.remove('show'); }, 1800);
+  }
+
+  document.querySelectorAll('.tab').forEach(function(tab){
+    tab.addEventListener('click', function(){
+      document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+      tab.classList.add('active');
+      activeCat = tab.dataset.cat;
+      renderMenu();
+    });
+  });
+
+  window.addEventListener('scroll', function(){
+    document.getElementById('siteHeader').classList.toggle('scrolled', window.scrollY > 30);
+  });
+
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); }
+    });
+  }, {threshold:.12});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  if(!prefersReduced){
+    var embers = document.getElementById('embers');
+    for(var i=0;i<14;i++){
+      var e = document.createElement('div');
+      e.className = 'ember';
+      var size = 4 + Math.random()*7;
+      e.style.width = size+'px';
+      e.style.height = size+'px';
+      e.style.left = (Math.random()*100)+'%';
+      e.style.animationDelay = (Math.random()*9)+'s';
+      e.style.animationDuration = (7+Math.random()*6)+'s';
+      embers.appendChild(e);
+    }
+  }
+
+  if(!prefersReduced){
+    // nuvens passando no céu do hero
+    var clouds = document.getElementById('clouds');
+    for(var c=0;c<5;c++){
+      var cl = document.createElement('div');
+      cl.className = 'cloud';
+      var w = 120 + Math.random()*160;
+      cl.style.width = w+'px';
+      cl.style.height = (w*.28)+'px';
+      cl.style.top = (8 + Math.random()*55)+'%';
+      cl.style.animationDuration = (40+Math.random()*30)+'s';
+      cl.style.animationDelay = (-Math.random()*60)+'s';
+      clouds.appendChild(cl);
+    }
+
+    // burger acompanha o mouse e sobe um pouco com o scroll
+    var burger = document.getElementById('burgerParallax');
+    var mx = 0, my = 0;
+    function applyBurger(){
+      var s = Math.min(window.scrollY, 600);
+      burger.style.transform = 'translate(' + (mx*18) + 'px,' + (my*14 - s*.18) + 'px) rotate(' + (mx*4) + 'deg)';
+    }
+    window.addEventListener('mousemove', function(ev){
+      mx = ev.clientX/window.innerWidth - .5;
+      my = ev.clientY/window.innerHeight - .5;
+      applyBurger();
+    });
+    window.addEventListener('scroll', applyBurger, {passive:true});
+  }
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ---------- painel de preços (só o dono vê e consegue salvar) ----------
+  function renderAdminBody(){
+    var body = document.getElementById('adminBody');
+    body.innerHTML = '';
+    var lastCat = null;
+    MENU.forEach(function(item){
+      if(item.cat !== lastCat){
+        lastCat = item.cat;
+        var head = document.createElement('div');
+        head.className = 'admin-cat-head';
+        head.textContent = tagLabel(item.cat) + 's';
+        body.appendChild(head);
+      }
+      var row = document.createElement('div');
+      row.className = 'admin-row';
+      row.innerHTML =
+        '<div class="an">' + item.name + (item.priceFrom ? '<small>preço "a partir de"</small>' : '') + '</div>' +
+        '<input type="number" step="0.01" min="0" data-id="' + item.id + '" value="' + getPrice(item).toFixed(2) + '">';
+      body.appendChild(row);
+    });
+  }
+
+  window.openAdmin = function(){
+    renderAdminBody();
+    document.getElementById('adminMsg').textContent = '';
+    document.getElementById('adminOverlay').classList.add('open');
+    document.getElementById('adminDrawer').classList.add('open');
+  };
+  window.closeAdmin = function(){
+    document.getElementById('adminOverlay').classList.remove('open');
+    document.getElementById('adminDrawer').classList.remove('open');
+  };
+
+  window.saveAdminPrices = async function(){
+    var msg = document.getElementById('adminMsg');
+    var btn = document.getElementById('adminSaveBtn');
+    var newOverrides = {};
+    document.querySelectorAll('#adminBody input[data-id]').forEach(function(inp){
+      var item = MENU.find(function(m){ return m.id === inp.dataset.id; });
+      if(!item) return;
+      var val = Math.round(parseFloat(inp.value || '0') * 100) / 100;
+      if(!isNaN(val) && val !== item.price) newOverrides[item.id] = val;
+    });
+
+    var artifactCap = window.__brothersArtifactCap;
+    if(!artifactCap){ msg.textContent = 'Não foi possível conectar ao publicador. Tenta recarregar a página.'; return; }
+
+    btn.disabled = true;
+    msg.textContent = 'Salvando e publicando pro site inteiro...';
+    try{
+      var res = await fetch(location.href, {cache:'no-store'});
+      var rawHtml = await res.text();
+      var newJson = JSON.stringify(newOverrides);
+      var newHtml = rawHtml.replace(
+        /(<script type="application\/json" id="priceData">)([\s\S]*?)(<\/script>)/,
+        function(_, a, b, c){ return a + newJson + c; }
+      );
+      await artifactCap.publish(newHtml);
+      msg.textContent = 'Publicado! A página vai recarregar.';
+    }catch(err){
+      btn.disabled = false;
+      if(err && err.code === 'not_writer' || err && err.code === 'not_granted'){
+        msg.textContent = 'Só o dono do site pode salvar alterações aqui.';
+      } else if(err && err.code === 'conflict'){
+        msg.textContent = 'Alguém salvou uma versão mais nova — a página vai recarregar com ela.';
+      } else {
+        msg.textContent = 'Não deu pra publicar agora. Tenta de novo em instantes.';
+      }
+    }
+  };
+
+  (async function initOwnerTools(){
+    try{
+      var user = await claude.use('user');
+      var isOwner = user ? await user.isOwner() : false;
+      if(!isOwner) return;
+      var artifactCap = await claude.use('artifact');
+      if(!artifactCap) return;
+      window.__brothersArtifactCap = artifactCap;
+      document.getElementById('adminFab').hidden = false;
+    }catch(e){ /* sem viewer/capacidade disponível: painel fica oculto */ }
+  })();
+
+  loadCart();
+  renderMenu();
+  updateCartUI();
+})();
+</script>
+
+</body></html>
